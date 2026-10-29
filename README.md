@@ -5,9 +5,15 @@ Portfolio preview for Mashiur Khan, aimed at startup investors. Design plan: [DE
 - `/`: animated studio edition (hero choreography, timeline + globe, khanflow CTA)
 - `/sf`: minimal edition
 
+## Setup
+
+Requires Node.js 20+ and access to this private repo.
+
 ```bash
+git clone https://github.com/cinnamon-cicada/mashiur-khan-preview.git
+cd mashiur-khan-preview
 npm install
-npm run dev
+npm run dev   # → http://localhost:5173 (and /sf)
 ```
 
 All copy and data live in `src/content.ts` (lines marked `SAMPLE` need real values). Backend calls are mocked in `src/api/mock.ts`.
