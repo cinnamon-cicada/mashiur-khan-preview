@@ -41,10 +41,10 @@ export default function Sf() {
         <div className="sf-cofounder">
           <span>Meet my cofounder</span>
           <svg className="sf-arrow" viewBox="0 0 60 14" aria-hidden="true"><path d="M1 7h56M51 1l6 6-6 6" /></svg>
-          <figure>
-            <div className="sf-photo sf-photo-sm" aria-label={`Photo of ${startup.cofounder.name} (placeholder)`}>{startup.cofounder.name[0]}</div>
-            <figcaption>{startup.cofounder.name}</figcaption>
-          </figure>
+          <a className="sf-mate" href={startup.cofounder.linkedin} target="_blank" rel="noreferrer" aria-label={`${startup.cofounder.name} on LinkedIn`}>
+            <img className="sf-photo sf-photo-sm" src={startup.cofounder.photo} alt="" />
+            <span className="sf-tip" aria-hidden="true">{startup.cofounder.name}</span>
+          </a>
         </div>
       </section>
 
@@ -64,7 +64,7 @@ export default function Sf() {
         <h2>FAQ</h2>
         <dl className="sf-faq">
           <dt>{faq.q}</dt>
-          <dd className="metal-gold">{faq.a}</dd>
+          <dd>{faq.a}</dd>
         </dl>
       </section>
 
