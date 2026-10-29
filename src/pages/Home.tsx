@@ -27,7 +27,7 @@ export default function Home() {
   // ---- hero choreography ----
   const [phase, setPhase] = useState<'intro' | 'appear' | 'flight' | 'landed'>(reduced ? 'landed' : 'intro')
   const [progress, setProgress] = useState(reduced ? 1 : 0)
-  const [shown, setShown] = useState(reduced ? 1 : 0) // credentials revealed
+  const [shown, setShown] = useState(reduced ? 3 : 0) // credentials revealed
   const [geom, setGeom] = useState<Geom | null>(null)
   const [len, setLen] = useState(0)
   const [unlockAt, setUnlockAt] = useState<number[]>([])
@@ -36,8 +36,6 @@ export default function Home() {
   const [flightPt, setFlightPt] = useState<Pt>({ x: -200, y: -200 })
   const [chatOpen, setChatOpen] = useState(false)
   const [excited, setExcited] = useState(false)
-  const scrolled = useRef(false)
-  const [cascade, setCascade] = useState(false) // scrolling reveals the rest one after another
   const [nearTop, setNearTop] = useState(true) // greeting bubble only shows on the hero
 
   const heroRef = useRef<HTMLElement>(null)
@@ -169,31 +167,25 @@ export default function Home() {
     return () => cancelAnimationFrame(raf)
   }, [phase])
 
-  // After the hop: FOUNDER slams in (or everything, if they already scrolled).
+  // After the hop the credentials slam in one after another: FOUNDER, EX-ORACLE, VANDERBILT.
   useEffect(() => {
     if (phase !== 'landed' || reduced) return
-    const t = setTimeout(() => { setShown(1); if (scrolled.current) setCascade(true) }, 450)
+    const t = setTimeout(() => setShown(1), 450)
     return () => clearTimeout(t)
   }, [phase])
 
   useEffect(() => {
-    if (!cascade || shown < 1 || shown >= 3) return
+    if (shown < 1 || shown >= 3) return
     const t = setTimeout(() => setShown((s) => Math.min(3, s + 1)), 550)
     return () => clearTimeout(t)
-  }, [cascade, shown])
+  }, [shown])
 
   useEffect(() => {
     if (shown > 0 && !reduced) shake.start({ x: [0, -7, 6, -3, 0], y: [0, 4, -3, 1, 0], transition: { duration: 0.32, delay: 0.12 } })
   }, [shown, shake])
 
-  // A nudge of scroll reveals the rest of the credentials, one after another.
   useEffect(() => {
-    const onScroll = () => {
-      setNearTop(window.scrollY < window.innerHeight * 0.4)
-      if (window.scrollY < 8) return
-      scrolled.current = true
-      setCascade(true)
-    }
+    const onScroll = () => setNearTop(window.scrollY < window.innerHeight * 0.4)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -277,11 +269,6 @@ export default function Home() {
               >
                 <path d="M2.5 58.5 C1.6 61.6 3.4 63.5 6.6 63.5 L13.4 63.5 C16.2 63.5 17.4 62 18.2 59.6 L37.6 3.2 C38 1.8 36.6 1.2 35.9 2.4 Z" />
               </motion.svg>
-              {shown === i + 1 && i < 2 && (
-                <motion.p className="press-key" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i === 0 ? 1.1 : 0.4 }}>
-                  Scroll
-                </motion.p>
-              )}
               {shown === i + 1 && (
                 <motion.a
                   href="#story"

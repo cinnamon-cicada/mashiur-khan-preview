@@ -36,11 +36,6 @@
 .chevron path { fill: none; stroke: var(--silver-deep); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 @keyframes bob { 50% { transform: translateY(7px); } }
 
-.press-key {
-  position: absolute; left: calc(clamp(70px, 12vw, 180px) + 40px); bottom: -14px; margin: 0; white-space: nowrap; font-size: 13px; font-weight: 700; letter-spacing: .28em; text-transform: uppercase;
-  color: var(--silver-deep); opacity: .7;
-}
-
 .arc { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; }
 .arc-link { text-decoration: none; }
 .arc-text-layer { z-index: 3; }
