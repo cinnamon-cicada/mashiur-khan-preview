@@ -15,13 +15,14 @@ export default function Rabbit({ flying, landed, excited, size = 112 }: Props) {
     <svg className={cls} width={size} height={size * 1.2} viewBox="0 0 120 144" aria-hidden="true">
       <defs>
         <radialGradient id="fur" cx="40%" cy="35%" r="75%">
+          {/* nearly flat fur: just a whisper of shading toward the edges */}
           <stop offset="0" stopColor="#ffffff" />
-          <stop offset=".6" stopColor="#e3e6ea" />
-          <stop offset="1" stopColor="#b4bac2" />
+          <stop offset=".75" stopColor="#f6f7f8" />
+          <stop offset="1" stopColor="#e9ebee" />
         </radialGradient>
         <linearGradient id="inner" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#f2c879" />
-          <stop offset="1" stopColor="#ee9a5c" />
+          <stop offset="0" stopColor="#f1bd78" />
+          <stop offset="1" stopColor="#eeac6c" />
         </linearGradient>
       </defs>
 

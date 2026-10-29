@@ -114,6 +114,8 @@
   background-size: 200% 100%; background-position: 0 0;
   -webkit-background-clip: text; background-clip: text; color: transparent;
   transition: background-position .8s ease;
+  /* stretched 1.5× taller like the credentials; margins make room for the extra height */
+  display: inline-block; transform: scaleY(1.5); margin-block: .42em .25em;
 }
 .cta-link:hover, .cta-link:focus-visible { background-position: 100% 0; outline: none; }
 .cta-tagline { margin: 1em 0 0; font-size: clamp(16px, 1.4vw, 20px); color: var(--ink-soft); }
