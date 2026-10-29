@@ -47,7 +47,7 @@ A single column taking the middle 50% of the screen on desktop (full width minus
 1. Introduction: name, photo (right), short intro + mission, row of links.
 2. khanflow.com: what it is, plus "meet my cofounder →" with a photo of Tausif.
 3. Who I am: Jane Street, Oracle, Vanderbilt, each linkable to a project.
-4. FAQ: "Favorite city in the world?" "SF."
+4. FAQ: "Favorite city" "SF."
 
 ## Shared components
 - **Header**: an `MK` monogram on the left and a route toggle (`Studio` / `SF`) on the right. Small and translucent.

@@ -64,6 +64,6 @@ export const whoIAm = [
   { label: 'Vanderbilt', detail: 'Computer science', href: '#' }, // SAMPLE
 ]
 
-export const faq = { q: 'Favorite city in the world?', a: 'SF.' }
+export const faq = { q: 'Favorite city', a: 'SF.' }
 
 export const robbitGreeting = 'Hi! I’m Robbit, your furry friend. Ask me anything!'
