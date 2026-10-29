@@ -16,15 +16,16 @@
   object-fit: fill; opacity: .32;
 }
 
-.creds { position: absolute; left: 41vw; top: 28vh; z-index: 2; }
+.creds { position: absolute; left: 5vw; top: 28vh; z-index: 2; }
 .cred { position: relative; display: flex; align-items: center; gap: .15em; height: clamp(99px, 12.9vw, 210px); }
 /* letters stretched 1.5× taller, same width */
 .cred-tall { display: inline-block; transform: scaleY(1.5); transform-origin: 50% 55%; }
 .cred-word {
   display: inline-block; transform-origin: 30% 60%;
-  font-family: var(--display); font-weight: 600; letter-spacing: -.015em; line-height: 1;
-  font-size: clamp(54px, 7.4vw, 128px); color: var(--ink);
+  font-family: var(--display); font-weight: 400; letter-spacing: -.01em; line-height: 1;
+  font-size: clamp(34px, 5.8vw, 104px); color: var(--ink); white-space: nowrap;
 }
+.cred-letter { display: inline-block; }
 .dash { width: clamp(24px, 2.8vw, 42px); height: auto; overflow: visible; margin-left: .35em; align-self: center; transform: scaleY(1.5); }
 .dash path { fill: var(--gold); }
 
@@ -47,6 +48,11 @@
 /* ---------- rabbit (fixed, draggable) ---------- */
 .robbit { position: fixed; z-index: 30; touch-action: none; transition: opacity .6s ease; }
 .robbit.is-hidden { opacity: 0; }
+/* on the right half of the screen the speech bubble opens to the rabbit's left */
+.robbit.on-right .bubble { left: auto; right: calc(100% + 14px); }
+.robbit.on-right .bubble::after { left: auto; right: -8px; transform: rotate(-135deg); }
+.robbit.on-right .bubble-peek { animation-name: pop-left; }
+@keyframes pop-left { from { opacity: 0; transform: translateX(8px) scale(.9); } }
 .robbit-handle { transform-origin: 50% 60%; cursor: default; outline: none; border-radius: 50%; }
 .robbit.is-landed .robbit-handle { cursor: grab; }
 .robbit.is-landed .robbit-handle:active { cursor: grabbing; }
@@ -103,8 +109,8 @@
 .cta { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24vh 6vw 0; text-align: center; }
 .cta-kicker { margin: 0; font-size: clamp(12px, 1.1vw, 15px); font-weight: 800; letter-spacing: .32em; text-transform: uppercase; color: var(--silver-deep); }
 .cta-link {
-  margin-top: .2em; font-family: var(--display); font-weight: 600; letter-spacing: -.01em;
-  font-size: clamp(44px, 9vw, 150px); line-height: 1.05; text-decoration: none;
+  margin-top: .2em; font-family: var(--display); font-weight: 400; letter-spacing: -.01em;
+  font-size: clamp(22px, 6vw, 104px); line-height: 1.05; text-decoration: none;
   background: linear-gradient(100deg, var(--gold) 0%, var(--sunset) 55%, var(--gold-deep) 100%);
   background-size: 200% 100%; background-position: 0 0;
   -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -135,9 +141,9 @@
 @media (max-width: 720px) {
   .name-wrap { right: 16px; top: 78px; }
   .name { font-size: clamp(22px, 6.4vw, 34px); letter-spacing: .1em; }
-  .creds { left: 16px; top: max(250px, 31vh); } /* leaves room for the arc text above */
+  .creds { top: max(250px, 31vh); } /* leaves room for the arc text above */
   .arc-text { font-size: 15px; }
-  .cred-word { font-size: clamp(44px, 13vw, 72px); }
+  .cred-word { font-size: clamp(24px, 8.4vw, 52px); }
   .cred { height: clamp(66px, 18vw, 110px); }
   .story { grid-template-columns: 1fr; padding: 12vh 16px 8vh; }
   .globe-wrap { width: 130vw; margin: 4vh 0 0 -4vw; }

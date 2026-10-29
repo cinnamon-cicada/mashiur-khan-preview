@@ -11,25 +11,23 @@ Audience: startup investors. Two routes share one content file (`src/content.ts`
 | `--gold` | `#d9a441` | bridge, pins, check |
 | `--sunset` | `#ee7b3a` | links, accents, rabbit nose |
 
-Type: **Rubik** is the display font (`--display`: FOUNDER / EX-ORACLE / VANDERBILT, KHANFLOW.COM). **Fredoka** (`--rounded`) is for the name and softer headings, and **Nunito** for body text. No serifs anywhere.
+Type: **Michroma** is the display font (`--display`: FOUNDER / EX-ORACLE / VANDERBILT, KHANFLOW.COM): extended and squared-off, stretched 1.5× taller. **Fredoka** (`--rounded`) is for the name and softer headings, and **Nunito** for body text. No serifs anywhere.
 Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration keyed to transparent orange-gold by `scripts/bridge.mjs`).
 
 ## `/` — three full-height panels
 **Panel 1 (hero)**, laid out from sketch #2:
 ```
                                    MASHIUR KHAN.  ░░bridge░░░░░░░→ (off-page)
-            ╭───────────╮               (rabbit starts here)
-           ╱             ╲  FOUNDER  ✓
-          ╱  building      ╲    ˅
-   [chat]╱   khanflow.com ↗  EX-ORACLE ✓
- (rabbit)                    VANDERBILT ✓
+                 ╭───────────────╮
+  FOUNDER    ╱  ╱                 ╲  building
+  EX-ORACLE ╱  ╱ (rabbit starts)   ╲   khanflow.com ↗
+  VANDERBILT ╱   ˅                  ╲[chat] (rabbit)
 ```
 - `MASHIUR KHAN.` sits top-right, light and wide-tracked, and fades in. Behind it the bridge silhouette stretches past both ends of the name and bleeds off the right edge at low opacity.
-- The rabbit head starts beside FOUNDER, arcs up and over to the left, then drops to the bottom-left. It spins fast with ears fluttering. `building khanflow.com ↗` is set along the descending part of the arc, and each letter unlocks as the rabbit passes it.
+- The rabbit head starts low on the left (over where the credentials will appear), arcs up and over to the right, then drops to the bottom-right. It spins fast with ears fluttering. `building khanflow.com ↗` is set along the descending part of the arc, reading downhill, and each letter unlocks as the rabbit passes it.
 - On phones there's no room beside the credentials, so `building khanflow.com ↗` instead rides a gentle bow rotated 13° clockwise, tucked into the right side of the band between the name and FOUNDER. The credentials sit lower to make room.
-- The rabbit lands with a small hop and its arms bud out. From then on it is `position: fixed` and draggable. **It is Robbit:** clicking it opens the chat as a speech bubble above its head.
-- `FOUNDER` slams in (large, rounded, left-aligned stack, centre of the page), and a tapered gold dash (heavy at the foot, hairline at the tip) draws from the bottom up. A small chevron under the newest credential bobs up and down.
-- The remaining credentials then slam in on their own, one after another 550ms apart (`EX-ORACLE`, then `VANDERBILT`), each with its own dash, and the chevron moves down to the last.
+- The rabbit lands with a small hop and its arms bud out. From then on it is `position: fixed` and draggable. **It is Robbit:** clicking it opens the chat as a speech bubble beside it (to its left when it's on the right half of the screen).
+- The credentials (a large left-aligned stack, 5vw from the left edge) slide in from the left one letter at a time. The bottom word starts first and each word's first letter lags the one below it: `VANDERBILT`, then `EX-ORACLE`, then `FOUNDER`. Once a word is in, a tapered gold dash (heavy at the foot, hairline at the tip) draws from the bottom up. A small chevron under `VANDERBILT` bobs up and down.
 
 **Panel 2 (story + timeline + globe)**, laid out from sketch #1: narrative and timeline on the left, a large globe on the right.
 - Lead copy: "In 2022, I had yet to take a plane. I was in Bangladesh. 4 years later, I launched my first startup in SF."

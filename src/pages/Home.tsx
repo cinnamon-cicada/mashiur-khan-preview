@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { motion, useAnimationControls, useInView } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import Rabbit from '../components/Rabbit'
 import Chat from '../components/Chat'
 import Globe from '../components/Globe'
@@ -15,8 +15,12 @@ const RABBIT = typeof window !== 'undefined' && window.innerWidth < 720 ? 96 : 1
 const ARC_TEXT = 'building khanflow.com ↗'
 const ARC_TEXT_OFFSET = 170 // px from the landing spot along the arc (desktop)
 const ARC_TEXT_RISE_NARROW = -13 // phones: negative = rotated 13° clockwise (slopes down as it reads), top-right of the band between name and FOUNDER
-const NARROW_UNLOCK = [0.06, 0.4] // phones: share of the flight over which letters unlock
-const ARC_TEXT_TILT = 15 // degrees clockwise, to sit closer to the leap's line
+const NARROW_UNLOCK = [0.6, 0.9] // phones: share of the flight over which letters unlock (the falling leg)
+// credential slide-in: seconds between letters, between words' first letters, and per-letter duration
+const LETTER_STAGGER = 0.045
+const WORD_STAGGER = 0.32
+const LETTER_MS = 420
+const ARC_TEXT_TILT = -15 // degrees anticlockwise, to sit closer to the (mirrored) leap's line
 
 type Pt = { x: number; y: number }
 type Geom = { d: string; start: Pt; end: Pt }
@@ -27,7 +31,7 @@ export default function Home() {
   // ---- hero choreography ----
   const [phase, setPhase] = useState<'intro' | 'appear' | 'flight' | 'landed'>(reduced ? 'landed' : 'intro')
   const [progress, setProgress] = useState(reduced ? 1 : 0)
-  const [shown, setShown] = useState(reduced ? 3 : 0) // credentials revealed
+  const [shown, setShown] = useState(reduced) // credentials revealed
   const [geom, setGeom] = useState<Geom | null>(null)
   const [len, setLen] = useState(0)
   const [unlockAt, setUnlockAt] = useState<number[]>([])
@@ -44,16 +48,16 @@ export default function Home() {
   const pathRef = useRef<SVGPathElement>(null)
   const textRef = useRef<SVGTextElement>(null)
   const linkRef = useRef<HTMLAnchorElement>(null)
-  const shake = useAnimationControls()
 
-  // Parabolic leap: from low beside FOUNDER, high up over the page, down to the bottom-left corner.
+  // Parabolic leap: from low on the left (where the credentials will appear), high up over the page,
+  // down to the bottom-right corner.
   const measure = useCallback(() => {
     const w = window.innerWidth, h = window.innerHeight
     const r = founderRef.current?.getBoundingClientRect()
     if (!r) return
     const narrow = w < 720
-    const start = { x: Math.min(r.right + (narrow ? 10 : 60), w - 70), y: r.bottom + window.scrollY + (narrow ? 30 : 50) }
-    const end = { x: Math.max(70, w * 0.075), y: h - (narrow ? 96 : 130) }
+    const start = { x: narrow ? 70 : Math.max(70, w * 0.15), y: r.bottom + window.scrollY + (narrow ? 30 : 50) }
+    const end = { x: w - Math.max(70, w * 0.075), y: h - (narrow ? 96 : 130) }
     // Quadratic Bézier = true parabola. Pick the control point so the apex sits at `apex`.
     const apex = Math.max(70, h * 0.09)
     const c = { x: (start.x + end.x) / 2, y: apex - Math.sqrt((apex - start.y) * (apex - end.y)) }
@@ -105,8 +109,9 @@ export default function Home() {
       return
     }
 
-    const a = path.getPointAtLength(L - ARC_TEXT_OFFSET)
-    const b = path.getPointAtLength(L - ARC_TEXT_OFFSET - seg)
+    // reads downhill toward the landing spot: a is farther back along the flight, b nearer the end
+    const a = path.getPointAtLength(L - ARC_TEXT_OFFSET - seg)
+    const b = path.getPointAtLength(L - ARC_TEXT_OFFSET)
     const m = path.getPointAtLength(L - ARC_TEXT_OFFSET - seg / 2)
     const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
     const chord = Math.hypot(b.x - a.x, b.y - a.y)
@@ -131,8 +136,8 @@ export default function Home() {
         // phones right-align the lettering to the path's end, so it starts after the slack
         const lead = textArc.narrow ? arcLen - t.getComputedTextLength() : 0
         const f = (lead + t.getSubStringLength(0, i + 1)) / arcLen
-        // phones: the rabbit crosses the text right-to-left on its way up, so the end unlocks first
-        return textArc.narrow ? len * (p0 + (1 - f) * (p1 - p0)) : len - textArc.offset - f * textArc.seg + 20
+        // the rabbit crosses the text left-to-right on its way down, so letters unlock in reading order
+        return textArc.narrow ? len * (p0 + f * (p1 - p0)) : len - textArc.offset - (1 - f) * textArc.seg + 20
       }))
     }
     compute()
@@ -167,22 +172,12 @@ export default function Home() {
     return () => cancelAnimationFrame(raf)
   }, [phase])
 
-  // After the hop the credentials slam in one after another: FOUNDER, EX-ORACLE, VANDERBILT.
+  // After the hop the credentials slide in letter by letter, bottom word first.
   useEffect(() => {
     if (phase !== 'landed' || reduced) return
-    const t = setTimeout(() => setShown(1), 450)
+    const t = setTimeout(() => setShown(true), 350)
     return () => clearTimeout(t)
   }, [phase])
-
-  useEffect(() => {
-    if (shown < 1 || shown >= 3) return
-    const t = setTimeout(() => setShown((s) => Math.min(3, s + 1)), 550)
-    return () => clearTimeout(t)
-  }, [shown])
-
-  useEffect(() => {
-    if (shown > 0 && !reduced) shake.start({ x: [0, -7, 6, -3, 0], y: [0, 4, -3, 1, 0], transition: { duration: 0.32, delay: 0.12 } })
-  }, [shown, shake])
 
   useEffect(() => {
     const onScroll = () => setNearTop(window.scrollY < window.innerHeight * 0.4)
@@ -232,11 +227,7 @@ export default function Home() {
 
   return (
     <main className="home">
-      <motion.section
-        className="hero"
-        ref={heroRef}
-        animate={shake}
-      >
+      <section className="hero" ref={heroRef}>
         <motion.div
           className="name-wrap"
           initial={reduced ? false : { opacity: 0, y: 8 }}
@@ -248,41 +239,54 @@ export default function Home() {
         </motion.div>
 
         <div className="creds">
-          {person.credentials.map((c, i) => (
-            <div key={c} className="cred" ref={i === 0 ? founderRef : undefined} aria-hidden={shown <= i}>
-              <motion.span
-                className="cred-word"
-                initial={false}
-                animate={shown > i ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 2.4, y: -40 }}
-                transition={shown > i ? { type: 'spring', stiffness: 700, damping: 22, mass: 0.9 } : { duration: 0 }}
-              >
-                <span className="cred-tall">{c.toUpperCase()}</span>
-              </motion.span>
-              {/* tapered dash: heavy at the foot, hairline at the tip, drawn bottom-up */}
-              <motion.svg
-                className="dash"
-                viewBox="0 0 40 64"
-                aria-hidden="true"
-                initial={false}
-                animate={{ clipPath: shown > i ? 'inset(0% 0% 0% 0%)' : 'inset(100% 0% 0% 0%)' }}
-                transition={{ duration: 0.26, delay: shown > i ? 0.3 : 0, ease: 'easeOut' }}
-              >
-                <path d="M2.5 58.5 C1.6 61.6 3.4 63.5 6.6 63.5 L13.4 63.5 C16.2 63.5 17.4 62 18.2 59.6 L37.6 3.2 C38 1.8 36.6 1.2 35.9 2.4 Z" />
-              </motion.svg>
-              {shown === i + 1 && (
-                <motion.a
-                  href="#story"
-                  className="chevron"
-                  aria-label="Scroll to story"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}
+          {person.credentials.map((c, i) => {
+            // bottom word starts first; each word's first letter lags the one below it
+            const t0 = (person.credentials.length - 1 - i) * WORD_STAGGER
+            const letters = [...c.toUpperCase()]
+            const done = t0 + (letters.length - 1) * LETTER_STAGGER + LETTER_MS / 1000
+            return (
+              <div key={c} className="cred" ref={i === 0 ? founderRef : undefined} aria-label={c}>
+                <span className="cred-word" aria-hidden="true">
+                  <span className="cred-tall">
+                    {letters.map((ch, j) => (
+                      <motion.span
+                        key={j}
+                        className="cred-letter"
+                        initial={false}
+                        animate={shown ? { opacity: 1, x: 0 } : { opacity: 0, x: '-0.9em' }}
+                        transition={shown ? { duration: LETTER_MS / 1000, ease: [0.2, 0.8, 0.2, 1], delay: t0 + j * LETTER_STAGGER } : { duration: 0 }}
+                      >
+                        {ch}
+                      </motion.span>
+                    ))}
+                  </span>
+                </span>
+                {/* tapered dash: heavy at the foot, hairline at the tip, drawn bottom-up once the word is in */}
+                <motion.svg
+                  className="dash"
+                  viewBox="0 0 40 64"
+                  aria-hidden="true"
+                  initial={false}
+                  animate={{ clipPath: shown ? 'inset(0% 0% 0% 0%)' : 'inset(100% 0% 0% 0%)' }}
+                  transition={{ duration: 0.26, delay: shown ? done : 0, ease: 'easeOut' }}
                 >
-                  <svg viewBox="0 0 24 14" aria-hidden="true"><path d="M2 2l10 10L22 2" /></svg>
-                </motion.a>
-              )}
-            </div>
-          ))}
+                  <path d="M2.5 58.5 C1.6 61.6 3.4 63.5 6.6 63.5 L13.4 63.5 C16.2 63.5 17.4 62 18.2 59.6 L37.6 3.2 C38 1.8 36.6 1.2 35.9 2.4 Z" />
+                </motion.svg>
+                {shown && i === person.credentials.length - 1 && (
+                  <motion.a
+                    href="#story"
+                    className="chevron"
+                    aria-label="Scroll to story"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 2 * WORD_STAGGER + 1.2 }}
+                  >
+                    <svg viewBox="0 0 24 14" aria-hidden="true"><path d="M2 2l10 10L22 2" /></svg>
+                  </motion.a>
+                )}
+              </div>
+            )
+          })}
         </div>
 
         {geom && (
@@ -304,13 +308,13 @@ export default function Home() {
             </svg>
           </a>
         )}
-      </motion.section>
+      </section>
 
       <Story />
       <Cta linkRef={linkRef} onNear={setExcited} />
 
       <div
-        className={`robbit ${phase === 'intro' ? 'is-hidden' : ''} ${phase === 'landed' ? 'is-landed' : ''} ${phase === 'landed' && !pos ? 'hop' : ''}`}
+        className={`robbit ${rabbitXY.x + RABBIT / 2 > window.innerWidth / 2 ? 'on-right' : ''} ${phase === 'intro' ? 'is-hidden' : ''} ${phase === 'landed' ? 'is-landed' : ''} ${phase === 'landed' && !pos ? 'hop' : ''}`}
         style={{ left: rabbitXY.x, top: rabbitXY.y, width: RABBIT }}
       >
         {phase === 'landed' && (chatOpen || nearTop) && <Chat open={chatOpen} onClose={() => setChatOpen(false)} onPeek={() => setChatOpen(true)} />}
