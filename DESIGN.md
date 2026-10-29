@@ -46,7 +46,7 @@ Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration 
 **Panel 3 (CTA)**
 - `CHECK IT OUT: KHANFLOW.COM`, centred and set high. The first time it scrolls into view, KHANFLOW.COM arrives with its letters spread wide apart and closes up into the word over 1s.
 - When the cursor is on or near the link, the rabbit perks its ears, lifts its right arm and waves.
-- Contact icons spread along the bottom (email, phone, LinkedIn, GitHub).
+- Contact icons spread along the bottom (email, phone, LinkedIn, GitHub). When they're first reached, each does a quick hop and a little wobble in place, left to right.
 
 ## `/sf` — minimal edition
 A single column taking the middle 50% of the screen on desktop (full width minus gutters on mobile). Quiet type, hairline rules, lots of air.

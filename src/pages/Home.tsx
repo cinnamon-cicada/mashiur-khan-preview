@@ -391,6 +391,9 @@ function Cta({ linkRef, onNear }: { linkRef: React.RefObject<HTMLAnchorElement |
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { amount: 0.5, once: true })
   const spread = reduced || inView ? '-0.01em' : '0.9em'
+  // reaching the contact icons makes each one hop and wobble, left to right
+  const iconsRef = useRef<HTMLUListElement>(null)
+  const iconsInView = useInView(iconsRef, { amount: 0.8, once: true })
   return (
     <section className="cta" ref={ref}>
       <p className="cta-kicker">Check it out:</p>
@@ -411,9 +414,9 @@ function Cta({ linkRef, onNear }: { linkRef: React.RefObject<HTMLAnchorElement |
       </motion.a>
       <p className="cta-tagline">{startup.tagline}</p>
 
-      <ul className="contacts">
-        {links.map((l) => (
-          <li key={l.label}>
+      <ul className={`contacts ${iconsInView ? 'is-hopping' : ''}`} ref={iconsRef}>
+        {links.map((l, i) => (
+          <li key={l.label} style={{ '--i': i } as React.CSSProperties}>
             <a href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" aria-label={l.label}>
               {l.icon}
               <span>{l.label}</span>
