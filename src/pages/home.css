@@ -151,11 +151,11 @@
 .contacts.is-hopping li { animation: hop-wobble .6s cubic-bezier(.3, 0, .3, 1) calc(var(--i) * .08s) both; }
 @keyframes hop-wobble {
   0% { transform: none; }
-  25% { transform: translateY(-12px); }
-  45% { transform: translateY(0) scaleY(.94); }
-  60% { transform: rotate(-9deg); }
-  75% { transform: rotate(7deg); }
-  88% { transform: rotate(-3deg); }
+  28% { transform: translateY(-24px); }
+  50% { transform: translateY(0) scaleY(.92); }
+  64% { transform: rotate(-4deg); }
+  80% { transform: rotate(3deg); }
+  92% { transform: rotate(-1deg); }
   100% { transform: none; }
 }
 
