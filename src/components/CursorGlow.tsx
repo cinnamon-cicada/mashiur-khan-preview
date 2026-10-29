@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 const HOT = 'a, button, [role="button"], input, textarea'
 
-// A soft gold light that follows the pointer and swells over anything interactive. Mouse/pen only.
+// A soft blue light that follows the pointer and swells over anything interactive. Mouse/pen only.
 export default function CursorGlow() {
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {

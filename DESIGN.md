@@ -3,19 +3,19 @@
 Audience: startup investors. Two routes share one content file (`src/content.ts`) and one mock API (`src/api/mock.ts`).
 
 ## Visual system
-Night theme: silver and gold on a deep navy-black background.
+Night theme: silver and metallic blue on a deep navy-black background.
 | Token | Value | Use |
 |---|---|---|
 | `--paper` | `#060a14` (radial lift to `#101b33` up top) | page background |
 | `--ink` | `#e4e8ee` | body text |
 | `--metal-silver` | brushed silver gradient | name, credentials, headlines, continents |
-| `--metal-gold` | brushed gold gradient | KHANFLOW.COM, dashes, accents, active toggle |
-| `--glow` | `240, 200, 110` | cursor light and hover glow |
+| `--metal-blue` | brushed blue gradient | KHANFLOW.COM, dashes, accents, active toggle |
+| `--glow` | `110, 170, 255` | cursor light and hover glow |
 
 - Big headers (name, credentials, story headline, KHANFLOW.COM, /sf name and answer) use the metal gradients with a slow back-and-forth gleam.
-- The pointer carries a soft gold light that swells over anything interactive. Links, buttons and pins glow gold on hover.
-- A very sparse field of faint stars (silver, a few gold) pulses slowly behind everything.
-- The rabbit is a soft moonlit silver-white, and leaves a shooting-star trail (in flight or while dragged) that lingers about 3s before fading.
+- The pointer carries a soft blue light that swells over anything interactive. Links, buttons and pins glow blue on hover.
+- A very sparse field of faint stars (silver, a few blue) pulses slowly behind everything.
+- The rabbit is a soft moonlit silver-white, and leaves a blue-silver shooting-star trail (in flight or while dragged) that lingers about 3s before fading.
 
 Type: **Michroma** is the display font (`--display`: FOUNDER / EX-ORACLE / VANDERBILT, KHANFLOW.COM): extended and squared-off, stretched 1.5× taller. **Fredoka** (`--rounded`) is for the name and softer headings, and **Nunito** for body text. No serifs anywhere.
 Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration keyed to transparent orange-gold by `scripts/bridge.mjs`).

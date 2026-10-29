@@ -1,5 +1,5 @@
 :root {
-  /* night palette: text is silver on deep navy-black; gold is the accent */
+  /* night palette: text is silver on deep navy-black; metallic blue is the accent */
   --ink: #e4e8ee;
   --ink-soft: #9ba4b3;
   --paper: #060a14;
@@ -8,13 +8,13 @@
   --line: rgba(201, 206, 214, .16);
   --silver: #c9ced6;
   --silver-deep: #7f8899;
-  --gold: #e0b45a;
-  --gold-deep: #c8963a;
-  --sunset: #f0c66e; /* accents are bright gold now */
-  --glow: 240, 200, 110; /* rgb of the hover/cursor glow */
+  --blue: #5b9cff;
+  --blue-deep: #3a78e0;
+  --accent: #8cbcff; /* bright blue accent */
+  --glow: 110, 170, 255; /* rgb of the hover/cursor glow */
   /* brushed-metal gradients, used for text (background-clip) and fills */
   --metal-silver: linear-gradient(100deg, #7f8796 0%, #f5f7fb 18%, #aab1be 36%, #eef1f6 54%, #8d95a3 72%, #e3e7ee 90%, #9aa2b0 100%);
-  --metal-gold: linear-gradient(100deg, #9a7023 0%, #f8dd95 18%, #c8963a 36%, #ffecb0 54%, #a97b27 72%, #ecc76d 90%, #b8862f 100%);
+  --metal-blue: linear-gradient(100deg, #1f4f9e 0%, #9cc8ff 18%, #3a78e0 36%, #d4e7ff 54%, #2a5fb8 72%, #7fb0f5 90%, #2f66c4 100%);
   --rounded: 'Fredoka', 'Nunito', system-ui, sans-serif;
   --body: 'Nunito', system-ui, sans-serif;
   --display: 'Michroma', 'Nunito', system-ui, sans-serif; /* display font: extended, squared-off */
@@ -33,15 +33,15 @@ body {
 }
 a { color: inherit; }
 button { font: inherit; }
-::selection { background: var(--gold); color: var(--paper); }
+::selection { background: var(--blue); color: var(--paper); }
 
 /* metallic text: a brushed gradient that slowly sweeps back and forth */
-.metal, .metal-gold {
+.metal, .metal-blue {
   background-image: var(--metal-silver); background-size: 260% 100%;
   -webkit-background-clip: text; background-clip: text; color: transparent;
   animation: shimmer 7s ease-in-out infinite alternate;
 }
-.metal-gold { background-image: var(--metal-gold); }
+.metal-blue { background-image: var(--metal-blue); }
 @keyframes shimmer { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
 
 /* letter-by-letter metal: each letter paints its own slice of one shared gradient, so the
@@ -62,7 +62,7 @@ button { font: inherit; }
   box-shadow: 0 0 10px 2px rgba(233, 237, 244, .5);
   animation: twinkle 5s ease-in-out infinite;
 }
-.stars i.is-gold { background: #f6dc9a; box-shadow: 0 0 12px 2px rgba(var(--glow), .55); }
+.stars i.is-blue { background: #a9cbff; box-shadow: 0 0 12px 2px rgba(var(--glow), .55); }
 @keyframes twinkle { 0%, 100% { opacity: .12; transform: scale(.7); } 50% { opacity: .9; transform: scale(1.25); } }
 
 /* the pointer's glow (fine pointers only) */
@@ -76,7 +76,7 @@ button { font: inherit; }
 .cursor-glow.is-hot { width: 320px; height: 320px; margin: -160px 0 0 -160px; }
 @media (pointer: coarse) { .cursor-glow { display: none; } }
 
-/* anything interactive glows gold under the pointer */
+/* anything interactive glows blue under the pointer */
 a, button, [role='button'], input { transition: filter .25s ease, box-shadow .25s ease, color .2s, border-color .2s; }
 /* (a filter would turn the element into a containing block, so wrappers of positioned layers opt out with .no-glow) */
 :is(a, button, [role='button']):not(.no-glow):is(:hover, :focus-visible) {
@@ -98,12 +98,12 @@ a, button, [role='button'], input { transition: filter .25s ease, box-shadow .25
 /* one pill that slides between the two links; metal on Studio, solid on SF */
 .route-thumb {
   position: absolute; top: 3px; bottom: 3px; left: 3px; width: calc(50% - 3px); border-radius: 999px;
-  background: var(--gold);
+  background: var(--blue);
   transition: transform .4s cubic-bezier(.65, 0, .35, 1);
 }
 .route-thumb::before {
   content: ''; position: absolute; inset: 0; border-radius: inherit;
-  background: var(--metal-gold); background-size: 220% 100%;
+  background: var(--metal-blue); background-size: 220% 100%;
   transition: opacity .4s;
 }
 .route-toggle.on-sf .route-thumb { transform: translateX(100%); }

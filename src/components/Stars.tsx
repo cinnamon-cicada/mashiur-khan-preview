@@ -12,7 +12,7 @@ export default function Stars() {
         size: 2.5 + Math.random() * 2.5,
         dur: 3 + Math.random() * 4,
         delay: -Math.random() * 7,
-        gold: Math.random() < 0.3,
+        blue: Math.random() < 0.3,
       })),
     [],
   )
@@ -21,7 +21,7 @@ export default function Stars() {
       {stars.map((s, i) => (
         <i
           key={i}
-          className={s.gold ? 'is-gold' : undefined}
+          className={s.blue ? 'is-blue' : undefined}
           style={{ left: `${s.left}%`, top: `${s.top}%`, width: s.size, height: s.size, animationDuration: `${s.dur}s`, animationDelay: `${s.delay}s` }}
         />
       ))}

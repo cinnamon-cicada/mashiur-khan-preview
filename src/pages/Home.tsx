@@ -281,14 +281,14 @@ export default function Home() {
           })}
         </div>
 
-        {/* shared brushed-gold fill for the dashes */}
+        {/* shared brushed-blue fill for the dashes */}
         <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
           <defs>
-            <linearGradient id="gold-metal" x1="0" y1="1" x2="0.4" y2="0">
-              <stop offset="0" stopColor="#9a7023" />
-              <stop offset=".35" stopColor="#f8dd95" />
-              <stop offset=".6" stopColor="#c8963a" />
-              <stop offset="1" stopColor="#ffecb0" />
+            <linearGradient id="blue-metal" x1="0" y1="1" x2="0.4" y2="0">
+              <stop offset="0" stopColor="#1f4f9e" />
+              <stop offset=".35" stopColor="#9cc8ff" />
+              <stop offset=".6" stopColor="#3a78e0" />
+              <stop offset="1" stopColor="#d4e7ff" />
             </linearGradient>
           </defs>
         </svg>
@@ -344,7 +344,7 @@ function Story() {
           {story[0]}
         </motion.p>
         <motion.p className="story-punch metal" initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, delay: 0.25 }}>
-          {story[1].replace(/SF\.$/, '')}<em className="metal-gold">SF.</em>
+          {story[1].replace(/SF\.$/, '')}<em className="metal-blue">SF.</em>
         </motion.p>
 
         {/* once reached, the whole timeline fades in as one wipe from top to bottom */}
@@ -399,7 +399,7 @@ function Cta({ linkRef, onNear }: { linkRef: React.RefObject<HTMLAnchorElement |
       <p className="cta-kicker">Check it out:</p>
       <motion.a
         ref={linkRef}
-        className="cta-link metal-gold"
+        className="cta-link metal-blue"
         // padding-left matches the trailing letter-space so the word stays centred while it closes up
         initial={false}
         animate={{ letterSpacing: spread, paddingLeft: spread === '-0.01em' ? '0em' : spread }}

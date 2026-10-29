@@ -6,7 +6,7 @@ const LIFE_MS = 3200 // how long a spark lingers before it has fully faded
 
 type Spark = { x: number; y: number; t: number; r: number }
 
-// A shooting-star tail: every point the rabbit passes leaves a soft gold-silver glow that
+// A shooting-star tail: every point the rabbit passes leaves a soft blue-silver glow that
 // hangs in the air for a few seconds and then slowly fades. Drawn on a fixed canvas behind the rabbit.
 const StarTrail = forwardRef<StarTrailHandle>(function StarTrail(_, ref) {
   const canvas = useRef<HTMLCanvasElement>(null)
@@ -28,8 +28,8 @@ const StarTrail = forwardRef<StarTrailHandle>(function StarTrail(_, ref) {
       const a = life * life // eases out slowly
       const r = s.r * (0.35 + 0.65 * life) * dpr
       const g = ctx.createRadialGradient(s.x * dpr, s.y * dpr, 0, s.x * dpr, s.y * dpr, r)
-      g.addColorStop(0, `rgba(255, 244, 214, ${0.55 * a})`)
-      g.addColorStop(0.35, `rgba(240, 200, 110, ${0.28 * a})`)
+      g.addColorStop(0, `rgba(222, 236, 255, ${0.55 * a})`)
+      g.addColorStop(0.35, `rgba(110, 170, 255, ${0.28 * a})`)
       g.addColorStop(1, 'rgba(201, 206, 214, 0)')
       ctx.fillStyle = g
       ctx.beginPath()

@@ -7,14 +7,14 @@
 .sf h1 { font-family: var(--rounded); font-weight: 500; font-size: 38px; letter-spacing: -.005em; line-height: 1.1; margin: 0; color: var(--ink); }
 .sf h2 { font-family: var(--rounded); font-weight: 500; font-size: 15px; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 16px; color: var(--silver-deep); }
 .sf h2 a { color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; text-transform: none; letter-spacing: .01em; font-size: 22px; }
-.sf h2 a:hover { color: var(--sunset); }
+.sf h2 a:hover { color: var(--accent); }
 .sf p { margin: 0 0 12px; }
 .sf a { text-underline-offset: 3px; text-decoration-color: rgba(201, 206, 214, .3); }
-.sf a:hover { text-decoration-color: var(--sunset); }
+.sf a:hover { text-decoration-color: var(--accent); }
 
 .sf-intro { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: start; }
 .sf-role { color: var(--ink-soft); margin: 4px 0 20px !important; }
-.sf-role a { color: var(--gold-deep); font-weight: 700; }
+.sf-role a { color: var(--blue-deep); font-weight: 700; }
 .sf-mission { color: var(--ink-soft); font-style: italic; }
 .sf-links { display: flex; flex-wrap: wrap; gap: 6px 22px; list-style: none; padding: 0; margin: 20px 0 0; font-size: 14px; font-weight: 700; }
 .sf-links a { color: var(--ink); }
@@ -22,7 +22,7 @@
 .sf-photo {
   width: 148px; aspect-ratio: 4 / 5; border-radius: 14px; display: grid; place-items: center;
   font-family: var(--rounded); font-size: 34px; color: var(--paper); letter-spacing: .06em;
-  background: linear-gradient(160deg, #eef1f6 0%, #aab1be 40%, var(--gold) 80%, #f8dd95 100%);
+  background: linear-gradient(160deg, #eef1f6 0%, #aab1be 40%, var(--blue) 80%, #9cc8ff 100%);
 }
 .sf-photo-sm { width: 64px; border-radius: 50%; aspect-ratio: 1; font-size: 22px; }
 img.sf-photo { object-fit: cover; background: none; }
