@@ -19,7 +19,7 @@ const NARROW_UNLOCK = [0.6, 0.9] // phones: share of the flight over which lette
 // credential slide-in: seconds between letters, between words' first letters, and per-letter duration
 const LETTER_STAGGER = 0.045
 const WORD_STAGGER = 0.32
-const LETTER_MS = 420
+const LETTER_MS = 750
 const ARC_TEXT_TILT = -15 // degrees anticlockwise, to sit closer to the (mirrored) leap's line
 
 type Pt = { x: number; y: number }
@@ -240,7 +240,7 @@ export default function Home() {
 
         <div className="creds">
           {person.credentials.map((c, i) => {
-            // letters arrive right to left, like a train pulling in from the left: the last letter lands first.
+            // letters fly in from the right edge of the screen, leading letter first, like a train pulling in.
             // bottom word starts first; each word's lead letter lags the one below it
             const t0 = (person.credentials.length - 1 - i) * WORD_STAGGER
             const letters = [...c.toUpperCase()]
@@ -254,8 +254,8 @@ export default function Home() {
                         key={j}
                         className="cred-letter"
                         initial={false}
-                        animate={shown ? { opacity: 1, x: 0 } : { opacity: 0, x: '-0.9em' }}
-                        transition={shown ? { duration: LETTER_MS / 1000, ease: [0.2, 0.8, 0.2, 1], delay: t0 + (letters.length - 1 - j) * LETTER_STAGGER } : { duration: 0 }}
+                        animate={shown ? { opacity: 1, x: 0 } : { opacity: 0, x: '100vw' }}
+                        transition={shown ? { duration: LETTER_MS / 1000, ease: [0.2, 0.8, 0.2, 1], delay: t0 + j * LETTER_STAGGER } : { duration: 0 }}
                       >
                         {ch}
                       </motion.span>
