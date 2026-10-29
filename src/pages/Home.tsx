@@ -14,7 +14,7 @@ const FLIGHT_MS = 2400
 const RABBIT = 124 // rendered head width; the head's centre sits at (0.5w, 0.6w)
 const ARC_TEXT = 'building khanflow.com ↗'
 const ARC_TEXT_OFFSET = 170 // px from the landing spot along the arc (desktop)
-const ARC_TEXT_RISE_NARROW = 20 // phones: degrees the text climbs as it reads, up into the top-right corner
+const ARC_TEXT_RISE_NARROW = 8 // phones: degrees the text climbs as it reads, in the band between name and FOUNDER
 const NARROW_UNLOCK = [0.06, 0.4] // phones: share of the flight over which letters unlock
 const ARC_TEXT_TILT = 15 // degrees clockwise, to sit closer to the leap's line
 
@@ -77,7 +77,7 @@ export default function Home() {
 
   // Desktop: the arc text gets its own, more bowed path — a chord across the landing leg of the
   // flight, pushed further out in the direction the flight path already bulges, then tilted.
-  // Phones: there's no room beside the credentials, so it rides a gentle rising bow above them, top-right.
+  // Phones: there's no room beside the credentials, so it rides a gentle, nearly level bow above them.
   useLayoutEffect(() => {
     const path = pathRef.current
     if (!geom || !path) return
@@ -89,14 +89,18 @@ export default function Home() {
 
     if (narrow) {
       const r = founderRef.current?.getBoundingClientRect()
-      if (!r) return
+      const n = nameRef.current?.getBoundingClientRect()
+      if (!r || !n) return
       const rad = (ARC_TEXT_RISE_NARROW * Math.PI) / 180
       const chord = seg * 0.97
-      // anchored at the right: the text ends just inside the right edge, above FOUNDER
-      const b = { x: window.innerWidth - 26, y: r.top + window.scrollY - 12 - chord * Math.sin(rad) }
-      const a = { x: b.x - chord * Math.cos(rad), y: b.y + chord * Math.sin(rad) }
-      const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
-      const bow = chord * 0.12 // bulge up-left of the reading direction
+      const bow = chord * 0.1 // bulge up-left of the reading direction
+      // centre the lettering in the band between the name and FOUNDER; glyphs sit ~20px above the
+      // path (dy + ascent) and the bow lifts the middle by about half its height
+      const band = (n.bottom + r.top) / 2 + window.scrollY
+      const mid = { x: window.innerWidth / 2, y: band + 20 + bow / 2 }
+      const dx = (chord / 2) * Math.cos(rad), dy = (chord / 2) * Math.sin(rad)
+      const a = { x: mid.x - dx, y: mid.y + dy }
+      const b = { x: mid.x + dx, y: mid.y - dy }
       const c = { x: mid.x - Math.sin(rad) * bow * 2, y: mid.y - Math.cos(rad) * bow * 2 }
       setTextArc({ d: `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`, seg, mid, offset: 0, tilt: 0, narrow })
       return
