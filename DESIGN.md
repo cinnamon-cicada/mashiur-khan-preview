@@ -38,7 +38,7 @@ Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration 
 
 **Panel 2 (story + timeline + globe)**, laid out from sketch #1: narrative and timeline on the left, a large globe on the right.
 - Lead copy: "In 2022, I had yet to take a plane. I was in Bangladesh. 4 years later, I launched my first startup in SF."
-- A vertical timeline (filled dot at the top, hollow dot at the end), with rows reading `year — location — title — description`. On entering view, rows fade in from the first year to the last.
+- A vertical timeline (filled dot at the top, hollow dot at the end), with rows reading `year — location — title — description`. Once it's reached, the whole timeline fades in as one soft wipe from top to bottom (a 1.8s animation, not tied to scroll).
 - The globe unblurs and can be dragged through 360°. White ocean, glowing grey rim, almost-black continents (d3-geo orthographic + world-atlas, bundled, no runtime fetch).
 - Every city in the timeline is pinned. Hovering a pin highlights the entries for that city and greys out the rest.
 - Data: `getTimeline()` (mock). LinkedIn returns HTTP 999 to scrapers, so a real sync needs an official export or a data provider. The sample entries in `content.ts` are placeholders to correct.

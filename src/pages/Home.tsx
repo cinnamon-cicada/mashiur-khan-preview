@@ -330,6 +330,8 @@ export default function Home() {
 function Story() {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { amount: 0.3, once: true })
+  const listRef = useRef<HTMLOListElement>(null)
+  const listInView = useInView(listRef, { amount: 0.25, once: true })
   const [entries, setEntries] = useState<TimelineEntry[]>([])
   const [active, setActive] = useState<string | null>(null)
 
@@ -345,17 +347,15 @@ function Story() {
           {story[1].replace(/SF\.$/, '')}<em className="metal-gold">SF.</em>
         </motion.p>
 
-        <ol className="timeline">
-          {entries.map((e, i) => {
+        {/* once reached, the whole timeline fades in as one wipe from top to bottom */}
+        <ol className={`timeline ${listInView || reduced ? 'is-revealed' : ''}`} ref={listRef}>
+          {entries.map((e) => {
             const place = places.find((p) => p.id === e.place)
             const state = active ? (active === e.place ? 'is-hit' : 'is-dim') : ''
             return (
-              <motion.li
+              <li
                 key={e.id}
                 className={state}
-                initial={{ opacity: 0, x: -10 }}
-                animate={inView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.7 + i * 0.35 }}
                 onPointerEnter={() => setActive(e.place)}
                 onPointerLeave={() => setActive(null)}
               >
@@ -363,7 +363,7 @@ function Story() {
                 <span className="tl-place">{place?.name}</span>
                 <span className="tl-title">{e.link ? <a href={e.link} target="_blank" rel="noreferrer">{e.title}</a> : e.title}</span>
                 <span className="tl-desc">{e.description}</span>
-              </motion.li>
+              </li>
             )
           })}
         </ol>
