@@ -18,7 +18,7 @@ Night theme: silver and metallic blue on a deep navy-black background.
 - The rabbit is a soft moonlit silver-white, and leaves a blue-silver shooting-star trail (in flight or while dragged) that lingers about 3s before fading.
 
 Type: **Michroma** is the display font (`--display`: FOUNDER / EX-ORACLE / VANDERBILT, KHANFLOW.COM): extended and squared-off, stretched 1.5× taller. **Fredoka** (`--rounded`) is for the name and softer headings, and **Nunito** for body text. No serifs anywhere.
-Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration keyed to transparent orange-gold by `scripts/bridge.mjs`).
+Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration keyed to transparent orange-gold by `scripts/bridge.mjs`, then turned blue with a CSS hue-rotate).
 
 ## `/` — three full-height panels
 **Panel 1 (hero)**, laid out from sketch #2:
@@ -32,7 +32,7 @@ Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration 
 - `MASHIUR KHAN.` sits top-right, light and wide-tracked. Its letters slide in from the left, emerging from behind an invisible, soft-edged curtain at 50vw (just left of the name on phones): the period first, the M last. Behind it the bridge silhouette stretches past both ends of the name and bleeds off the right edge at low opacity.
 - The rabbit head starts low on the left (over where the credentials will appear), arcs up and over to the right, then drops to the bottom-right. It spins fast with ears fluttering.
 - The rabbit lands with a small hop and its arms bud out. From then on it is `position: fixed` and draggable. **It is Robbit:** clicking it opens the chat as a speech bubble beside it (to its left when it's on the right half of the screen).
-- As soon as the rabbit takes off, the credentials (a large left-aligned stack, 5vw from the left edge) slide in one letter at a time from the right edge of the screen, moving right to left; the leading letter arrives first, like a train pulling in. The bottom word starts first and each word's first letter lags the one below it: `VANDERBILT`, then `EX-ORACLE`, then `FOUNDER`. Once a word is in, a tapered gold dash (heavy at the foot, hairline at the tip) draws from the bottom up. A small chevron under `VANDERBILT` bobs up and down.
+- As soon as the rabbit takes off, the credentials (a large left-aligned stack, 5vw from the left edge) slide in one letter at a time from the right edge of the screen, moving right to left; the leading letter arrives first, like a train pulling in. The bottom word starts first and each word's first letter lags the one below it: `VANDERBILT`, then `EX-ORACLE`, then `FOUNDER`. Once a word is in, a tapered blue dash (heavy at the foot, hairline at the tip) draws from the bottom up. A small chevron under `VANDERBILT` bobs up and down.
 
 - Scrolling down slides the name and bridge off to the right and each credential row off to the left, in step with the page position. The rows leave one at a time, top first, each over its own overlapping stretch of scroll. Everything is off once the hero is 80% scrolled away, and scrolling back up brings it all back.
 
