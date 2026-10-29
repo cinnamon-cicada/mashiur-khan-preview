@@ -1,32 +1,14 @@
-# React + TypeScript + Vite
+# mashiur-khan-preview
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Portfolio preview for Mashiur Khan, aimed at startup investors. Design plan: [DESIGN.md](DESIGN.md).
 
-Currently, two official plugins are available:
+- `/`: animated studio edition (hero choreography, timeline + globe, khanflow CTA)
+- `/sf`: minimal edition
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+All copy and data live in `src/content.ts` (lines marked `SAMPLE` need real values). Backend calls are mocked in `src/api/mock.ts`.
+`scripts/bridge.mjs` turns the source Golden Gate illustration into the transparent gold silhouette in `public/img/`.
