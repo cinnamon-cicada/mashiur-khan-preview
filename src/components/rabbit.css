@@ -1,5 +1,5 @@
 .rabbit { overflow: visible; display: block; filter: drop-shadow(0 6px 10px rgba(22, 23, 26, .14)); }
-.rabbit .ear, .rabbit .arm, .rabbit .paw { transform-box: view-box; transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), opacity .3s; }
+.rabbit .ear, .rabbit .arm { transform-box: view-box; transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), opacity .3s; }
 .rabbit .ear-l { transform-origin: 48px 56px; }
 .rabbit .ear-r { transform-origin: 72px 56px; }
 
@@ -18,9 +18,10 @@
 .rabbit .arm-r { transform-origin: 84px 122px; }
 .rabbit.is-landed .arm { transform: scale(1); transition-delay: .25s; }
 
-.rabbit .paw { opacity: 0; transform-origin: 104px 84px; transform: scale(.4); }
-.rabbit.is-excited .paw { opacity: 1; transform: scale(1); animation: wave .5s ease-in-out .2s infinite alternate; }
-@keyframes wave { from { transform: rotate(-18deg); } to { transform: rotate(22deg); } }
+/* excited: the right arm lifts and waves from the shoulder */
+/* pivot sits on the body's edge so the raised arm stays clear of the face */
+.rabbit.is-excited .arm-r { transform-origin: 89px 121px; transform: rotate(-45deg); animation: wave .42s ease-in-out .15s infinite alternate; }
+@keyframes wave { from { transform: rotate(-28deg); } to { transform: rotate(-62deg); } }
 
 .rabbit.is-excited .eyes { transform-box: view-box; transform-origin: 60px 82px; animation: blink 3s infinite; }
 @keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }

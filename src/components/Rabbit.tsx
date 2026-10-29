@@ -8,7 +8,7 @@ type Props = {
 }
 
 // Robbit's head. Ears flutter in flight, flop sideways at rest, perk up when excited.
-// The detached paw only appears (and waves) when excited.
+// When excited, the right arm lifts and waves.
 export default function Rabbit({ flying, landed, excited, size = 112 }: Props) {
   const cls = ['rabbit', flying && 'is-flying', landed && 'is-landed', excited && 'is-excited'].filter(Boolean).join(' ')
   return (
@@ -54,13 +54,6 @@ export default function Rabbit({ flying, landed, excited, size = 112 }: Props) {
       <path d="M56 91 h8 l-4 4.5 z" fill="#ee7b3a" />
       <path d="M60 95.5 q-3 5 -7 3 M60 95.5 q3 5 7 3" fill="none" stroke="#16171a" strokeWidth="1.6" strokeLinecap="round" />
 
-      <g className="paw">
-        <ellipse cx="112" cy="68" rx="11" ry="10" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" />
-        <circle cx="112" cy="71" r="3.2" fill="#ee9a5c" />
-        <circle cx="106.5" cy="64.5" r="2" fill="#ee9a5c" />
-        <circle cx="112" cy="62.5" r="2" fill="#ee9a5c" />
-        <circle cx="117.5" cy="64.5" r="2" fill="#ee9a5c" />
-      </g>
     </svg>
   )
 }

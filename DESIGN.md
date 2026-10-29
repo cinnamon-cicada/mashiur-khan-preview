@@ -39,7 +39,7 @@ Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration 
 
 **Panel 3 (CTA)**
 - `CHECK OUT THE STARTUP HERE: KHANFLOW.COM`, centred and set high.
-- When the cursor is on or near the link, the rabbit perks its ears and waves a detached paw.
+- When the cursor is on or near the link, the rabbit perks its ears, lifts its right arm and waves.
 - Contact icons spread along the bottom (email, phone, LinkedIn, GitHub).
 
 ## `/sf` — minimal edition
