@@ -136,7 +136,8 @@
 @media (max-width: 720px) {
   .name-wrap { right: 16px; top: 78px; }
   .name { font-size: clamp(22px, 6.4vw, 34px); letter-spacing: .1em; }
-  .creds { left: 16px; top: 32vh; }
+  .creds { left: 16px; top: max(250px, 31vh); } /* leaves room for the arc text above */
+  .arc-text { font-size: 15px; }
   .cred-word { font-size: clamp(44px, 13vw, 72px); }
   .cred { height: clamp(52px, 14vw, 80px); }
   .story { grid-template-columns: 1fr; padding: 12vh 16px 8vh; }

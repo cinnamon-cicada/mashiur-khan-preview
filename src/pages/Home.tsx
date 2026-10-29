@@ -13,7 +13,9 @@ const touch = typeof window !== 'undefined' && matchMedia('(pointer: coarse)').m
 const FLIGHT_MS = 2400
 const RABBIT = 124 // rendered head width; the head's centre sits at (0.5w, 0.6w)
 const ARC_TEXT = 'building khanflow.com ↗'
-const ARC_TEXT_OFFSET = 170 // px from the landing spot along the arc
+const ARC_TEXT_OFFSET = 170 // px from the landing spot along the arc (desktop)
+const ARC_TEXT_RISE_NARROW = 20 // phones: degrees the text climbs as it reads, up into the top-right corner
+const NARROW_UNLOCK = [0.06, 0.4] // phones: share of the flight over which letters unlock
 const ARC_TEXT_TILT = 15 // degrees clockwise, to sit closer to the leap's line
 
 type Pt = { x: number; y: number }
@@ -29,7 +31,7 @@ export default function Home() {
   const [geom, setGeom] = useState<Geom | null>(null)
   const [len, setLen] = useState(0)
   const [unlockAt, setUnlockAt] = useState<number[]>([])
-  const [textArc, setTextArc] = useState<{ d: string; seg: number; mid: Pt } | null>(null)
+  const [textArc, setTextArc] = useState<{ d: string; seg: number; mid: Pt; offset: number; tilt: number; narrow: boolean } | null>(null)
   const [pos, setPos] = useState<Pt | null>(null) // rabbit top-left once landed
   const [flightPt, setFlightPt] = useState<Pt>({ x: -200, y: -200 })
   const [chatOpen, setChatOpen] = useState(false)
@@ -73,15 +75,33 @@ export default function Home() {
     return () => window.removeEventListener('resize', onResize)
   }, [measure])
 
-  // The arc text gets its own, more bowed path: a chord across the landing leg of the flight,
-  // pushed further out in the direction the flight path already bulges.
+  // Desktop: the arc text gets its own, more bowed path — a chord across the landing leg of the
+  // flight, pushed further out in the direction the flight path already bulges, then tilted.
+  // Phones: there's no room beside the credentials, so it rides a gentle rising bow above them, top-right.
   useLayoutEffect(() => {
     const path = pathRef.current
     if (!geom || !path) return
     const L = path.getTotalLength()
     setLen(L)
-    const fs = Math.min(28, Math.max(20, window.innerWidth * 0.019))
+    const narrow = window.innerWidth < 720
+    const fs = narrow ? 15 : Math.min(28, Math.max(20, window.innerWidth * 0.019)) // matches .arc-text
     const seg = ARC_TEXT.length * fs * 0.66
+
+    if (narrow) {
+      const r = founderRef.current?.getBoundingClientRect()
+      if (!r) return
+      const rad = (ARC_TEXT_RISE_NARROW * Math.PI) / 180
+      const chord = seg * 0.97
+      // anchored at the right: the text ends just inside the right edge, above FOUNDER
+      const b = { x: window.innerWidth - 26, y: r.top + window.scrollY - 12 - chord * Math.sin(rad) }
+      const a = { x: b.x - chord * Math.cos(rad), y: b.y + chord * Math.sin(rad) }
+      const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
+      const bow = chord * 0.12 // bulge up-left of the reading direction
+      const c = { x: mid.x - Math.sin(rad) * bow * 2, y: mid.y - Math.cos(rad) * bow * 2 }
+      setTextArc({ d: `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`, seg, mid, offset: 0, tilt: 0, narrow })
+      return
+    }
+
     const a = path.getPointAtLength(L - ARC_TEXT_OFFSET)
     const b = path.getPointAtLength(L - ARC_TEXT_OFFSET - seg)
     const m = path.getPointAtLength(L - ARC_TEXT_OFFSET - seg / 2)
@@ -92,7 +112,7 @@ export default function Home() {
     if (n < 1) { nx = b.y - a.y; ny = a.x - b.x } // fallback: left of the reading direction
     const k = (0.5 * chord) / (n < 1 ? chord : n)
     const c = { x: mid.x + nx * k, y: mid.y + ny * k }
-    setTextArc({ d: `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`, seg, mid })
+    setTextArc({ d: `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`, seg, mid, offset: ARC_TEXT_OFFSET, tilt: ARC_TEXT_TILT, narrow })
   }, [geom])
 
   // Forward flight distance at which each letter unlocks (mapped from its spot on the text arc).
@@ -103,7 +123,12 @@ export default function Home() {
       const arc = document.getElementById('arc-text-path') as SVGPathElement | null
       if (!t || !arc) return
       const arcLen = arc.getTotalLength()
-      setUnlockAt([...ARC_TEXT].map((_, i) => len - ARC_TEXT_OFFSET - (t.getSubStringLength(0, i + 1) / arcLen) * textArc.seg + 20))
+      const [p0, p1] = NARROW_UNLOCK
+      setUnlockAt([...ARC_TEXT].map((_, i) => {
+        const f = t.getSubStringLength(0, i + 1) / arcLen
+        // phones: the rabbit crosses the text right-to-left on its way up, so the end unlocks first
+        return textArc.narrow ? len * (p0 + (1 - f) * (p1 - p0)) : len - textArc.offset - f * textArc.seg + 20
+      }))
     }
     compute()
     document.fonts?.ready.then(compute)
@@ -277,7 +302,7 @@ export default function Home() {
         {geom && (
           <svg className="arc" aria-hidden="true">
             <path ref={pathRef} d={geom.d} fill="none" />
-            {textArc && <path id="arc-text-path" d={textArc.d} fill="none" transform={`rotate(${ARC_TEXT_TILT} ${textArc.mid.x} ${textArc.mid.y})`} />}
+            {textArc && <path id="arc-text-path" d={textArc.d} fill="none" transform={`rotate(${textArc.tilt} ${textArc.mid.x} ${textArc.mid.y})`} />}
           </svg>
         )}
         {textArc && (
