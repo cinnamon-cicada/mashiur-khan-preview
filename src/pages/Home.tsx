@@ -172,11 +172,9 @@ export default function Home() {
     return () => cancelAnimationFrame(raf)
   }, [phase])
 
-  // After the hop the credentials slide in letter by letter, bottom word first.
+  // As soon as the rabbit takes off, the credentials slide in letter by letter, bottom word first.
   useEffect(() => {
-    if (phase !== 'landed' || reduced) return
-    const t = setTimeout(() => setShown(true), 350)
-    return () => clearTimeout(t)
+    if (phase === 'flight') setShown(true)
   }, [phase])
 
   useEffect(() => {
