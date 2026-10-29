@@ -50,12 +50,20 @@ export default function Home() {
   const linkRef = useRef<HTMLAnchorElement>(null)
   const trail = useRef<StarTrailHandle>(null)
 
-  // Scrolling away from the hero pushes the name (and bridge) off to the right and the credentials off
-  // to the left, in step with the page position: fully gone once the hero has scrolled 80% out of view.
+  // Scrolling away from the hero pushes the name (and bridge) off to the right and each credential row
+  // off to the left, in step with the page position. The rows go one at a time, top row first, each over
+  // its own stretch of scroll; everything is gone once the hero has scrolled 80% out of view.
   const { scrollY } = useScroll()
-  const exit = (v: number) => Math.min(1, Math.max(0, v / (window.innerHeight * 0.8)))
+  const exit = (v: number, from = 0, to = 1) => {
+    const t = v / (window.innerHeight * 0.8)
+    return Math.min(1, Math.max(0, (t - from) / (to - from)))
+  }
   const nameX = useTransform(scrollY, (v) => `${exit(v) * 100}vw`)
-  const credsX = useTransform(scrollY, (v) => `${-exit(v) * 100}vw`)
+  const rowX = [
+    useTransform(scrollY, (v) => `${-exit(v, 0, 0.5) * 100}vw`),
+    useTransform(scrollY, (v) => `${-exit(v, 0.25, 0.75) * 100}vw`),
+    useTransform(scrollY, (v) => `${-exit(v, 0.5, 1) * 100}vw`),
+  ]
 
   // Parabolic leap: from low on the left (where the credentials will appear), high up over the page,
   // down to the bottom-right corner.
@@ -219,7 +227,7 @@ export default function Home() {
           </h1>
         </motion.div>
 
-        <motion.div className="creds" style={{ x: credsX }}>
+        <div className="creds">
           {person.credentials.map((c, i) => {
             // letters fly in from the right edge of the screen, leading letter first, like a train pulling in.
             // bottom word starts first; each word's lead letter lags the one below it
@@ -227,7 +235,7 @@ export default function Home() {
             const letters = [...c.toUpperCase()]
             const done = t0 + (letters.length - 1) * LETTER_STAGGER + LETTER_MS / 1000
             return (
-              <div key={c} className="cred" ref={i === 0 ? founderRef : undefined} aria-label={c}>
+              <motion.div key={c} className="cred" ref={i === 0 ? founderRef : undefined} aria-label={c} style={{ x: rowX[i] }}>
                 <span className="cred-word metal-letters" aria-hidden="true">
                   <span className="cred-tall">
                     {letters.map((ch, j) => (
@@ -268,10 +276,10 @@ export default function Home() {
                     <svg viewBox="0 0 24 14" aria-hidden="true"><path d="M2 2l10 10L22 2" /></svg>
                   </motion.a>
                 )}
-              </div>
+              </motion.div>
             )
           })}
-        </motion.div>
+        </div>
 
         {/* shared brushed-gold fill for the dashes */}
         <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
