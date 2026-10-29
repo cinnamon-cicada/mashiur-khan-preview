@@ -25,6 +25,9 @@
   left: -28%; width: calc(128% + 6vw + 8vw);  /* overhangs the name on the left, bleeds off-page on the right */
   height: 290%; bottom: -85%;
   object-fit: fill; opacity: .32; filter: hue-rotate(190deg) brightness(1.5) saturate(1.1); /* the gold source art, turned blue */
+  /* both ends fade out instead of cutting off hard */
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 18%, #000 60%, transparent 85%);
+  mask-image: linear-gradient(to right, transparent 0, #000 18%, #000 60%, transparent 85%);
 }
 
 .creds { position: absolute; left: 5vw; top: 28vh; z-index: 2; }
