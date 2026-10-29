@@ -17,7 +17,7 @@ type Props = {
 }
 
 // Drag-to-rotate orthographic globe. Idles with a slow spin until touched or hovered.
-export default function Globe({ places, active, onActive, blurred, size = 560 }: Props) {
+export default function Globe({ places, active, onActive, blurred, size = 900 }: Props) {
   const [rotate, setRotate] = useState<[number, number]>([60, -22])
   const drag = useRef<{ x: number; y: number; r: [number, number] } | null>(null)
   const idle = useRef(true)
@@ -55,7 +55,7 @@ export default function Globe({ places, active, onActive, blurred, size = 560 }:
   const center: [number, number] = [-rotate[0], -rotate[1]]
 
   return (
-    <div className={`globe ${blurred ? 'is-blurred' : ''}`} style={{ width: size, maxWidth: '100%' }}>
+    <div className={`globe ${blurred ? 'is-blurred' : ''}`}>
       <svg
         viewBox={`0 0 ${size} ${size}`}
         role="img"

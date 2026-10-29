@@ -9,6 +9,7 @@
   --sunset: #ee7b3a;
   --display: 'Fredoka', 'Nunito', system-ui, sans-serif;
   --body: 'Nunito', system-ui, sans-serif;
+  --headline: 'Rubik', 'Nunito', system-ui, sans-serif; /* softly rounded corners, more corporate */
   color-scheme: light;
 }
 

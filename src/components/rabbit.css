@@ -14,8 +14,8 @@
 .rabbit.is-excited .ear-r { transform: rotate(6deg) scaleY(1.1); }
 
 .rabbit .arm { transform: scale(0); }
-.rabbit .arm-l { transform-origin: 38px 112px; }
-.rabbit .arm-r { transform-origin: 82px 112px; }
+.rabbit .arm-l { transform-origin: 26px 102px; }
+.rabbit .arm-r { transform-origin: 94px 102px; }
 .rabbit.is-landed .arm { transform: scale(1); transition-delay: .25s; }
 
 .rabbit .paw { opacity: 0; transform-origin: 104px 84px; transform: scale(.4); }

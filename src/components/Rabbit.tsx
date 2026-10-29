@@ -34,10 +34,15 @@ export default function Rabbit({ flying, landed, excited, size = 112 }: Props) {
         <ellipse cx="76" cy="32" rx="5" ry="20" fill="url(#inner)" />
       </g>
 
-      <g className="arm arm-l"><path d="M36 112 q-12 10 -6 22 q8 4 12 -8 z" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" /></g>
-      <g className="arm arm-r"><path d="M84 112 q12 10 6 22 q-8 4 -12 -8 z" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" /></g>
+      {/* stubby arms that pop straight out from the cheeks */}
+      <g className="arm arm-l"><path d="M26 98 C16 90 4 92 3 100 C2 108 14 110 26 106 Z" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" /></g>
+      <g className="arm arm-r"><path d="M94 98 C104 90 116 92 117 100 C118 108 106 110 94 106 Z" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" /></g>
 
-      <circle cx="60" cy="86" r="40" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" />
+      {/* bun-shaped head: narrower crown, full cheeks, soft flat chin */}
+      <path
+        d="M60 49 C80 48 95 60 98 78 C102 98 94 118 76 123 C68 125 52 125 44 123 C26 118 18 98 22 78 C25 60 40 50 60 49 Z"
+        fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5"
+      />
       <circle cx="38" cy="96" r="7" fill="#ee7b3a" opacity=".18" />
       <circle cx="82" cy="96" r="7" fill="#ee7b3a" opacity=".18" />
       <g className="eyes">

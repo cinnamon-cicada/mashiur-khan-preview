@@ -13,16 +13,16 @@ const touch = typeof window !== 'undefined' && matchMedia('(pointer: coarse)').m
 const FLIGHT_MS = 2400
 const RABBIT = 124 // rendered head width; the head's centre sits at (0.5w, 0.6w)
 const ARC_TEXT = 'building khanflow.com ↗'
-const ARC_TEXT_OFFSET = 150 // px from the landing spot along the arc
+const ARC_TEXT_OFFSET = 170 // px from the landing spot along the arc
 
 type Pt = { x: number; y: number }
-type Geom = { d: string; dRev: string; end: Pt }
+type Geom = { d: string; dRev: string; start: Pt; end: Pt }
 
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
 export default function Home() {
   // ---- hero choreography ----
-  const [phase, setPhase] = useState<'intro' | 'flight' | 'landed'>(reduced ? 'landed' : 'intro')
+  const [phase, setPhase] = useState<'intro' | 'appear' | 'flight' | 'landed'>(reduced ? 'landed' : 'intro')
   const [progress, setProgress] = useState(reduced ? 1 : 0)
   const [shown, setShown] = useState(reduced ? 1 : 0) // credentials revealed
   const [geom, setGeom] = useState<Geom | null>(null)
@@ -33,6 +33,7 @@ export default function Home() {
   const [chatOpen, setChatOpen] = useState(false)
   const [excited, setExcited] = useState(false)
   const scrolled = useRef(false)
+  const [cascade, setCascade] = useState(false) // scrolling reveals the rest one after another
   const [nearTop, setNearTop] = useState(true) // greeting bubble only shows on the hero
 
   const heroRef = useRef<HTMLElement>(null)
@@ -43,23 +44,21 @@ export default function Home() {
   const linkRef = useRef<HTMLAnchorElement>(null)
   const shake = useAnimationControls()
 
-  // Arc: from just right of FOUNDER, up and over to the left, down to the bottom-left corner.
+  // Parabolic leap: from low beside FOUNDER, high up over the page, down to the bottom-left corner.
   const measure = useCallback(() => {
     const w = window.innerWidth, h = window.innerHeight
     const r = founderRef.current?.getBoundingClientRect()
-    const n = nameRef.current?.getBoundingClientRect()
-    if (!r || !n) return
+    if (!r) return
     const narrow = w < 720
-    const start = { x: Math.min(r.right + (narrow ? 10 : 70), w - 60), y: r.top + window.scrollY - (narrow ? 40 : 10) }
+    const start = { x: Math.min(r.right + (narrow ? 10 : 60), w - 70), y: r.bottom + window.scrollY + (narrow ? 30 : 50) }
     const end = { x: Math.max(70, w * 0.075), y: h - (narrow ? 110 : 130) }
-    // apex clears the name: the curve peaks ~3/4 of the way to its control points
-    const top = n.bottom + window.scrollY + 24
-    const cy = start.y - (start.y - top) / 0.75
-    const c1 = { x: start.x - w * 0.04, y: cy }
-    const c2 = { x: Math.max(30, w * 0.06), y: cy }
+    // Quadratic Bézier = true parabola. Pick the control point so the apex sits at `apex`.
+    const apex = Math.max(70, h * 0.09)
+    const c = { x: (start.x + end.x) / 2, y: apex - Math.sqrt((apex - start.y) * (apex - end.y)) }
     setGeom({
-      d: `M${start.x} ${start.y} C${c1.x} ${c1.y} ${c2.x} ${c2.y} ${end.x} ${end.y}`,
-      dRev: `M${end.x} ${end.y} C${c2.x} ${c2.y} ${c1.x} ${c1.y} ${start.x} ${start.y}`,
+      d: `M${start.x} ${start.y} Q${c.x} ${c.y} ${end.x} ${end.y}`,
+      dRev: `M${end.x} ${end.y} Q${c.x} ${c.y} ${start.x} ${start.y}`,
+      start,
       end,
     })
   }, [])
@@ -87,11 +86,12 @@ export default function Home() {
     document.fonts?.ready.then(compute)
   }, [geom])
 
-  // Name fades in, then the flight.
+  // Name fades in, the rabbit fades in at the launch spot, then it leaps.
   useEffect(() => {
     if (reduced) return
-    const t = setTimeout(() => setPhase('flight'), 900)
-    return () => clearTimeout(t)
+    const a = setTimeout(() => setPhase('appear'), 500)
+    const b = setTimeout(() => setPhase('flight'), 1200)
+    return () => { clearTimeout(a); clearTimeout(b) }
   }, [])
 
   useEffect(() => {
@@ -117,15 +117,21 @@ export default function Home() {
   // After the hop: FOUNDER slams in (or everything, if they already scrolled).
   useEffect(() => {
     if (phase !== 'landed' || reduced) return
-    const t = setTimeout(() => setShown(scrolled.current ? 3 : 1), 450)
+    const t = setTimeout(() => { setShown(1); if (scrolled.current) setCascade(true) }, 450)
     return () => clearTimeout(t)
   }, [phase])
+
+  useEffect(() => {
+    if (!cascade || shown < 1 || shown >= 3) return
+    const t = setTimeout(() => setShown((s) => Math.min(3, s + 1)), 550)
+    return () => clearTimeout(t)
+  }, [cascade, shown])
 
   useEffect(() => {
     if (shown > 0 && !reduced) shake.start({ x: [0, -7, 6, -3, 0], y: [0, 4, -3, 1, 0], transition: { duration: 0.32, delay: 0.12 } })
   }, [shown, shake])
 
-  // Any key → next credential. Scrolling → all of them.
+  // Any key → next credential. Scrolling → the rest, one after another.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const el = e.target
@@ -137,7 +143,7 @@ export default function Home() {
       setNearTop(window.scrollY < window.innerHeight * 0.4)
       if (window.scrollY < 40) return
       scrolled.current = true
-      setShown((s) => (s >= 1 ? 3 : s))
+      setCascade(true)
     }
     window.addEventListener('keydown', onKey)
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -159,7 +165,8 @@ export default function Home() {
 
   // ---- rabbit placement: on the arc while flying, then fixed + draggable ----
   const landedXY = geom ? { x: geom.end.x - RABBIT * 0.5, y: geom.end.y - RABBIT * 0.6 } : flightPt
-  const rabbitXY: Pt = phase === 'landed' ? (pos ?? landedXY) : flightPt
+  const launchXY = geom ? { x: geom.start.x - RABBIT * 0.5, y: geom.start.y - RABBIT * 0.6 } : flightPt
+  const rabbitXY: Pt = phase === 'landed' ? (pos ?? landedXY) : phase === 'flight' && progress > 0 ? flightPt : launchXY
   const spin = phase === 'landed' ? 0 : progress * 1800
 
   const dragState = useRef<{ dx: number; dy: number; sx: number; sy: number } | null>(null)
@@ -243,22 +250,14 @@ export default function Home() {
 
         {geom && (
           <svg className="arc" aria-hidden="true">
-            <defs>
-              <mask id="travelled" maskUnits="userSpaceOnUse">
-                <path d={geom.d} stroke="#fff" strokeWidth="14" fill="none" strokeDasharray={`${len} ${len}`} strokeDashoffset={len - travelled} />
-              </mask>
-              <marker id="arrowhead" viewBox="0 0 12 12" refX="8" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
-                <path d="M1 1 L9 6 L1 11" fill="none" stroke="var(--silver-deep)" strokeWidth="1.6" strokeLinecap="round" />
-              </marker>
-            </defs>
-            <path ref={pathRef} d={geom.d} className="arc-line" mask="url(#travelled)" markerEnd="url(#arrowhead)" />
+            <path ref={pathRef} d={geom.d} fill="none" />
             <path id="arc-rev" d={geom.dRev} fill="none" />
           </svg>
         )}
         {geom && (
           <a className="arc-link" href={startup.url} target="_blank" rel="noreferrer" aria-label="khanflow.com">
             <svg className="arc arc-text-layer" aria-hidden="true">
-              <text ref={textRef} className="arc-text" dy="-12">
+              <text ref={textRef} className="arc-text" dy="-16">
                 <textPath href="#arc-rev" startOffset={ARC_TEXT_OFFSET}>
                   {[...ARC_TEXT].map((ch, i) => (
                     <tspan key={i} className={travelled >= (unlockAt[i] ?? Infinity) ? 'on' : ''}>{ch}</tspan>
@@ -274,7 +273,7 @@ export default function Home() {
       <Cta linkRef={linkRef} onNear={setExcited} />
 
       <div
-        className={`robbit ${phase === 'landed' ? 'is-landed' : ''} ${phase === 'landed' && !pos ? 'hop' : ''}`}
+        className={`robbit ${phase === 'intro' ? 'is-hidden' : ''} ${phase === 'landed' ? 'is-landed' : ''} ${phase === 'landed' && !pos ? 'hop' : ''}`}
         style={{ left: rabbitXY.x, top: rabbitXY.y, width: RABBIT }}
       >
         {phase === 'landed' && (chatOpen || nearTop) && <Chat open={chatOpen} onClose={() => setChatOpen(false)} onPeek={() => setChatOpen(true)} />}
