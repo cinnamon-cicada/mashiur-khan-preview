@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import Rabbit from '../components/Rabbit'
 import Chat from '../components/Chat'
 import Globe from '../components/Globe'
@@ -49,6 +49,13 @@ export default function Home() {
   const pathRef = useRef<SVGPathElement>(null)
   const linkRef = useRef<HTMLAnchorElement>(null)
   const trail = useRef<StarTrailHandle>(null)
+
+  // Scrolling away from the hero pushes the name (and bridge) off to the right and the credentials off
+  // to the left, in step with the page position: fully gone once the hero has scrolled 80% out of view.
+  const { scrollY } = useScroll()
+  const exit = (v: number) => Math.min(1, Math.max(0, v / (window.innerHeight * 0.8)))
+  const nameX = useTransform(scrollY, (v) => `${exit(v) * 100}vw`)
+  const credsX = useTransform(scrollY, (v) => `${-exit(v) * 100}vw`)
 
   // Parabolic leap: from low on the left (where the credentials will appear), high up over the page,
   // down to the bottom-right corner.
@@ -185,6 +192,7 @@ export default function Home() {
       <section className="hero" ref={heroRef}>
         <motion.div
           className="name-wrap"
+          style={{ x: nameX }}
           initial={reduced ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
@@ -211,7 +219,7 @@ export default function Home() {
           </h1>
         </motion.div>
 
-        <div className="creds">
+        <motion.div className="creds" style={{ x: credsX }}>
           {person.credentials.map((c, i) => {
             // letters fly in from the right edge of the screen, leading letter first, like a train pulling in.
             // bottom word starts first; each word's lead letter lags the one below it
@@ -263,7 +271,7 @@ export default function Home() {
               </div>
             )
           })}
-        </div>
+        </motion.div>
 
         {/* shared brushed-gold fill for the dashes */}
         <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">

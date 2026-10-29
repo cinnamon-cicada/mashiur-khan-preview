@@ -34,6 +34,8 @@ Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration 
 - The rabbit lands with a small hop and its arms bud out. From then on it is `position: fixed` and draggable. **It is Robbit:** clicking it opens the chat as a speech bubble beside it (to its left when it's on the right half of the screen).
 - As soon as the rabbit takes off, the credentials (a large left-aligned stack, 5vw from the left edge) slide in one letter at a time from the right edge of the screen, moving right to left; the leading letter arrives first, like a train pulling in. The bottom word starts first and each word's first letter lags the one below it: `VANDERBILT`, then `EX-ORACLE`, then `FOUNDER`. Once a word is in, a tapered gold dash (heavy at the foot, hairline at the tip) draws from the bottom up. A small chevron under `VANDERBILT` bobs up and down.
 
+- Scrolling down slides the name and bridge off to the right and the credentials off to the left, in step with the page position (fully off once the hero is 80% scrolled away; scrolling back up brings them back).
+
 **Panel 2 (story + timeline + globe)**, laid out from sketch #1: narrative and timeline on the left, a large globe on the right.
 - Lead copy: "In 2022, I had yet to take a plane. I was in Bangladesh. 4 years later, I launched my first startup in SF."
 - A vertical timeline (filled dot at the top, hollow dot at the end), with rows reading `year — location — title — description`. On entering view, rows fade in from the first year to the last.
