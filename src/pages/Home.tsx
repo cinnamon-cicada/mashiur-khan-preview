@@ -93,16 +93,16 @@ export default function Home() {
       if (!r || !n) return
       const rad = (ARC_TEXT_RISE_NARROW * Math.PI) / 180
       const chord = seg * 0.97
-      const bow = chord * 0.1 // sags down-right of the chord, so the right end curls up
+      const bow = chord * 0.1 // arches outward: the middle bulges up, away from the credentials
       // centre the lettering in the band between the name and FOUNDER; glyphs sit ~20px above the
-      // path (dy + ascent) and the sag lowers the middle by about half its height
+      // path (dy + ascent) and the arch lifts the middle by about half its height
       const band = (n.bottom + r.top) / 2 + window.scrollY
       const dx = (chord / 2) * Math.cos(rad), dy = (chord / 2) * Math.sin(rad)
       // pushed right: the text's end sits just inside the right edge
-      const mid = { x: window.innerWidth - 18 - dx, y: band + 20 - bow / 2 }
+      const mid = { x: window.innerWidth - 36 - dx, y: band + 20 + bow / 2 }
       const a = { x: mid.x - dx, y: mid.y + dy }
       const b = { x: mid.x + dx, y: mid.y - dy }
-      const c = { x: mid.x + Math.sin(rad) * bow * 2, y: mid.y + Math.cos(rad) * bow * 2 }
+      const c = { x: mid.x - Math.sin(rad) * bow * 2, y: mid.y - Math.cos(rad) * bow * 2 }
       setTextArc({ d: `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`, seg, mid, offset: 0, tilt: 0, narrow })
       return
     }
