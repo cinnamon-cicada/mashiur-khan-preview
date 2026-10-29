@@ -21,6 +21,9 @@
 /* excited: the right arm lifts and waves from the shoulder */
 /* pivot sits on the body's edge so the raised arm stays clear of the face */
 .rabbit.is-excited .arm-r { transform-origin: 89px 121px; transform: rotate(-45deg); animation: wave .42s ease-in-out .15s infinite alternate; }
+.rabbit .arm-front { opacity: 0; }
+.rabbit.is-excited .arm-front { opacity: 1; }
+.rabbit.is-excited .arm-r:not(.arm-front) { opacity: 0; }
 @keyframes wave { from { transform: rotate(-28deg); } to { transform: rotate(-62deg); } }
 
 .rabbit.is-excited .eyes { transform-box: view-box; transform-origin: 60px 82px; animation: blink 3s infinite; }

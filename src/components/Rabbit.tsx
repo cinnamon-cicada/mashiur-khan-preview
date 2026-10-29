@@ -9,6 +9,8 @@ type Props = {
 
 // Robbit's head. Ears flutter in flight, flop sideways at rest, perk up when excited.
 // When excited, the right arm lifts and waves.
+const rightArm = <path d="M83.7 121.1 C89.5 113.6 96.2 105.8 104.1 104.1 C113.8 101.6 120.3 119.4 111.3 123.8 C104.1 127.5 93.6 124.9 84.3 122.9 Z" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" />
+
 export default function Rabbit({ flying, landed, excited, size = 112 }: Props) {
   const cls = ['rabbit', flying && 'is-flying', landed && 'is-landed', excited && 'is-excited'].filter(Boolean).join(' ')
   return (
@@ -38,7 +40,7 @@ export default function Rabbit({ flying, landed, excited, size = 112 }: Props) {
 
       {/* arms pop out sideways near the chin: pinched where they meet the body, round paws at the tips */}
       <g className="arm arm-l"><path d="M36.3 121.1 C30.5 113.6 23.8 105.8 15.9 104.1 C6.2 101.6 -0.3 119.4 8.7 123.8 C15.9 127.5 26.4 124.9 35.7 122.9 Z" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" /></g>
-      <g className="arm arm-r"><path d="M83.7 121.1 C89.5 113.6 96.2 105.8 104.1 104.1 C113.8 101.6 120.3 119.4 111.3 123.8 C104.1 127.5 93.6 124.9 84.3 122.9 Z" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" /></g>
+      <g className="arm arm-r">{rightArm}</g>
 
       {/* bun-shaped head: narrower crown, full cheeks, soft flat chin */}
       <path
@@ -56,6 +58,8 @@ export default function Rabbit({ flying, landed, excited, size = 112 }: Props) {
       <path d="M56 91 h8 l-4 4.5 z" fill="#8a9fd8" />
       <path d="M60 95.5 q-3 5 -7 3 M60 95.5 q3 5 7 3" fill="none" stroke="#16171a" strokeWidth="1.6" strokeLinecap="round" />
 
+      {/* the same right arm drawn over the face, swapped in while it waves */}
+      <g className="arm arm-r arm-front">{rightArm}</g>
     </svg>
   )
 }
