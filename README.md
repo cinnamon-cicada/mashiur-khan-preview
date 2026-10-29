@@ -1,4 +1,4 @@
-# mashiur-khan-preview
+# mashiurkhan
 
 Portfolio preview for Mashiur Khan, aimed at startup investors. Design plan: [DESIGN.md](DESIGN.md).
 
@@ -10,8 +10,8 @@ Portfolio preview for Mashiur Khan, aimed at startup investors. Design plan: [DE
 Requires Node.js 20+ and access to this private repo.
 
 ```bash
-git clone https://github.com/cinnamon-cicada/mashiur-khan-preview.git
-cd mashiur-khan-preview
+git clone https://github.com/cinnamon-cicada/mashiurkhan.git
+cd mashiurkhan
 npm install
 npm run dev   # → http://localhost:5173 (and /sf)
 ```
