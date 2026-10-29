@@ -116,7 +116,7 @@
 .cta { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24vh 6vw 0; text-align: center; }
 .cta-kicker { margin: 0; font-size: clamp(12px, 1.1vw, 15px); font-weight: 800; letter-spacing: .32em; text-transform: uppercase; color: var(--silver-deep); }
 .cta-link {
-  margin-top: .2em; font-family: var(--display); font-weight: 400; letter-spacing: -.01em;
+  margin-top: .2em; font-family: var(--display); font-weight: 400; letter-spacing: -.01em; white-space: nowrap;
   font-size: clamp(22px, 6vw, 104px); line-height: 1.05; text-decoration: none;
   /* stretched 1.5× taller like the credentials; margins make room for the extra height */
   display: inline-block; transform: scaleY(1.5); margin-block: .42em .25em;

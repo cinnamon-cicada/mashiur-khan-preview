@@ -379,12 +379,20 @@ function Cta({ linkRef, onNear }: { linkRef: React.RefObject<HTMLAnchorElement |
     { label: 'LinkedIn', href: contacts.linkedin, icon: <LinkedInIcon /> },
     { label: 'GitHub', href: contacts.github, icon: <GitHubIcon /> },
   ]
+  // the first time the link scrolls into view it arrives spread wide, then closes up into the word
+  const ref = useRef<HTMLElement>(null)
+  const inView = useInView(ref, { amount: 0.5, once: true })
+  const spread = reduced || inView ? '-0.01em' : '0.9em'
   return (
-    <section className="cta">
+    <section className="cta" ref={ref}>
       <p className="cta-kicker">Check it out:</p>
-      <a
+      <motion.a
         ref={linkRef}
         className="cta-link metal-gold"
+        // padding-left matches the trailing letter-space so the word stays centred while it closes up
+        initial={false}
+        animate={{ letterSpacing: spread, paddingLeft: spread === '-0.01em' ? '0em' : spread }}
+        transition={{ duration: inView ? 1 : 0, ease: [0.22, 1, 0.36, 1] }}
         href={startup.url}
         target="_blank"
         rel="noreferrer"
@@ -392,7 +400,7 @@ function Cta({ linkRef, onNear }: { linkRef: React.RefObject<HTMLAnchorElement |
         onBlur={() => onNear(false)}
       >
         KHANFLOW.COM
-      </a>
+      </motion.a>
       <p className="cta-tagline">{startup.tagline}</p>
 
       <ul className="contacts">
