@@ -20,7 +20,7 @@ export const startup = {
   tagline: 'The AI planner that makes room for your life.',
   about:
     'Khanflow pulls Google, Outlook and iPhone calendars and to-do lists into one place. You talk or type to its assistant to find time for what matters, and nothing moves until you approve it. It ships on iPhone and Apple Watch, with booking links, syllabus import, and an MCP server for Claude, ChatGPT, Cursor and VS Code.',
-  cofounder: { name: 'Tausif Samin', photo: '/img/tausif.jpg', linkedin: 'https://www.linkedin.com/in/tausifsamin/' },
+  cofounder: { name: 'Tausif Samin', photo: '/img/tausif-cutout.png', linkedin: 'https://www.linkedin.com/in/tausifsamin/' },
 }
 
 export type Place = { id: string; name: string; coords: [number, number] }

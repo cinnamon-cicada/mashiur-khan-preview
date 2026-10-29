@@ -42,7 +42,7 @@ export default function Sf() {
           <span>Meet my cofounder</span>
           <svg className="sf-arrow" viewBox="0 0 60 14" aria-hidden="true"><path d="M1 7h56M51 1l6 6-6 6" /></svg>
           <a className="sf-mate" href={startup.cofounder.linkedin} target="_blank" rel="noreferrer" aria-label={`${startup.cofounder.name} on LinkedIn`}>
-            <img className="sf-photo sf-photo-sm" src={startup.cofounder.photo} alt="" />
+            <img className="sf-cutout" src={startup.cofounder.photo} alt="" />
             <span className="sf-tip" aria-hidden="true">{startup.cofounder.name}</span>
           </a>
         </div>

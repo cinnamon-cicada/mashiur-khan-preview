@@ -24,16 +24,22 @@
   font-family: var(--rounded); font-size: 34px; color: var(--paper); letter-spacing: .06em;
   background: linear-gradient(160deg, #eef1f6 0%, #aab1be 40%, var(--blue) 80%, #9cc8ff 100%);
 }
-.sf-photo-sm { width: 64px; border-radius: 50%; aspect-ratio: 1; font-size: 22px; }
 img.sf-photo { object-fit: cover; background: none; }
 
 .sf-lede { font-family: var(--rounded); font-size: 20px; color: var(--ink); }
 .sf-cofounder { display: flex; align-items: center; gap: 14px; margin-top: 22px; font-weight: 700; }
 .sf-arrow { width: 54px; height: 14px; overflow: visible; }
 .sf-arrow path { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.sf-mate { position: relative; display: block; border-radius: 50%; }
-.sf-mate img { display: block; transition: transform .25s; }
-.sf-mate:hover img, .sf-mate:focus-visible img { transform: scale(1.06); }
+.sf-mate { position: relative; display: block; }
+/* cut-out portrait: no backdrop, a soft cool rim of light so he doesn't sink into the navy,
+   shoulders fading out at the bottom, tilted a little to the right */
+.sf-cutout {
+  display: block; width: 80px; height: 80px;
+  filter: drop-shadow(0 0 3px rgba(222, 236, 255, .55)) drop-shadow(0 0 12px rgba(var(--glow), .35));
+  -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent);
+  transform: rotate(8deg); transition: transform .25s;
+}
+.sf-mate:hover .sf-cutout, .sf-mate:focus-visible .sf-cutout { transform: rotate(8deg) scale(1.06); }
 .sf-tip {
   position: absolute; left: 50%; bottom: calc(100% + 8px); white-space: nowrap;
   padding: 4px 10px; border-radius: 999px; font-size: 13px; font-weight: 600;
@@ -67,7 +73,7 @@ img.sf-photo { object-fit: cover; background: none; }
 @media (max-width: 600px) {
   .sf { padding-top: 110px; }
   .sf-intro { grid-template-columns: 1fr; }
-  .sf-photo:not(.sf-photo-sm) { grid-row: 1; width: 112px; }
+  .sf-photo { grid-row: 1; width: 112px; }
   .sf-list li { flex-direction: column; gap: 0; }
   .sf-list span { text-align: left; }
 }
