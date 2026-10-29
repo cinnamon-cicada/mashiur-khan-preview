@@ -9,7 +9,6 @@ import { contacts, person, places, startup, story, type TimelineEntry } from '..
 import './home.css'
 
 const reduced = typeof window !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
-const touch = typeof window !== 'undefined' && matchMedia('(pointer: coarse)').matches
 const FLIGHT_MS = 2400
 const RABBIT = 124 // rendered head width; the head's centre sits at (0.5w, 0.6w)
 const ARC_TEXT = 'building khanflow.com ↗'
@@ -186,23 +185,16 @@ export default function Home() {
     if (shown > 0 && !reduced) shake.start({ x: [0, -7, 6, -3, 0], y: [0, 4, -3, 1, 0], transition: { duration: 0.32, delay: 0.12 } })
   }, [shown, shake])
 
-  // Any key → next credential. Scrolling → the rest, one after another.
+  // A nudge of scroll reveals the rest of the credentials, one after another.
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      const el = e.target
-      if ((el instanceof Element && el.closest('input, textarea, [contenteditable]')) || e.metaKey || e.ctrlKey || e.altKey) return
-      if (['Tab', 'Shift', 'Meta', 'Control', 'Alt'].includes(e.key)) return
-      setShown((s) => (s >= 1 && s < 3 ? s + 1 : s))
-    }
     const onScroll = () => {
       setNearTop(window.scrollY < window.innerHeight * 0.4)
-      if (window.scrollY < 40) return
+      if (window.scrollY < 8) return
       scrolled.current = true
       setCascade(true)
     }
-    window.addEventListener('keydown', onKey)
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => { window.removeEventListener('keydown', onKey); window.removeEventListener('scroll', onScroll) }
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   // Rabbit gets excited when the pointer is on or near the khanflow link.
@@ -251,7 +243,6 @@ export default function Home() {
         className="hero"
         ref={heroRef}
         animate={shake}
-        onClick={(e) => { if (!(e.target as HTMLElement).closest('a, button')) setShown((s) => (s >= 1 && s < 3 ? s + 1 : s)) }}
       >
         <motion.div
           className="name-wrap"
@@ -287,7 +278,7 @@ export default function Home() {
               </motion.svg>
               {shown === i + 1 && i < 2 && (
                 <motion.p className="press-key" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i === 0 ? 1.1 : 0.4 }}>
-                  {touch ? 'Tap or scroll' : 'Press any key'}
+                  Scroll
                 </motion.p>
               )}
               {shown === i + 1 && (

@@ -29,7 +29,7 @@ Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration 
 - On phones there's no room beside the credentials, so `building khanflow.com ↗` instead rides a gentle bow rotated 13° clockwise, tucked into the right side of the band between the name and FOUNDER. The credentials sit lower to make room.
 - The rabbit lands with a small hop and its arms bud out. From then on it is `position: fixed` and draggable. **It is Robbit:** clicking it opens the chat as a speech bubble above its head.
 - `FOUNDER` slams in (large, rounded, left-aligned stack, centre of the page), and a tapered gold dash (heavy at the foot, hairline at the tip) draws from the bottom up. A small chevron under the newest credential bobs up and down.
-- A faded `Press any key` hint: each key press slams in the next credential (`EX-ORACLE`, then `VANDERBILT`), each with its own check, and the chevron moves down. Scrolling reveals all of them.
+- A faded `SCROLL` hint: the slightest scroll slams in the remaining credentials one after another (`EX-ORACLE`, then `VANDERBILT`), each with its own dash, and the chevron moves down.
 
 **Panel 2 (story + timeline + globe)**, laid out from sketch #1: narrative and timeline on the left, a large globe on the right.
 - Lead copy: "In 2022, I had yet to take a plane. I was in Bangladesh. 4 years later, I launched my first startup in SF."
