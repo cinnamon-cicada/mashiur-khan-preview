@@ -9,7 +9,7 @@ export default function Stars() {
       Array.from({ length: COUNT }, () => ({
         left: Math.random() * 100,
         top: Math.random() * 100,
-        size: 1.2 + Math.random() * 1.8,
+        size: 2.5 + Math.random() * 2.5,
         dur: 3 + Math.random() * 4,
         delay: -Math.random() * 7,
         gold: Math.random() < 0.3,
