@@ -1,4 +1,4 @@
-.rabbit { overflow: visible; display: block; filter: drop-shadow(0 6px 10px rgba(22, 23, 26, .14)); }
+.rabbit { overflow: visible; display: block; filter: drop-shadow(0 6px 12px rgba(0, 0, 0, .55)) drop-shadow(0 0 14px rgba(201, 206, 214, .12)); }
 .rabbit .ear, .rabbit .arm { transform-box: view-box; transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), opacity .3s; }
 .rabbit .ear-l { transform-origin: 48px 56px; }
 .rabbit .ear-r { transform-origin: 72px 56px; }

@@ -15,10 +15,10 @@ export default function Rabbit({ flying, landed, excited, size = 112 }: Props) {
     <svg className={cls} width={size} height={size * 1.2} viewBox="0 0 120 144" aria-hidden="true">
       <defs>
         <radialGradient id="fur" cx="40%" cy="35%" r="75%">
-          {/* nearly flat fur: just a whisper of shading toward the edges */}
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset=".75" stopColor="#f6f7f8" />
-          <stop offset="1" stopColor="#e9ebee" />
+          {/* soft moonlit silver-white rather than paper white, so it sits quietly on the night background */}
+          <stop offset="0" stopColor="#e3e6ec" />
+          <stop offset=".75" stopColor="#d3d8e0" />
+          <stop offset="1" stopColor="#bcc3ce" />
         </radialGradient>
         <linearGradient id="inner" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#f1bd78" />
@@ -47,10 +47,10 @@ export default function Rabbit({ flying, landed, excited, size = 112 }: Props) {
       <circle cx="38" cy="96" r="7" fill="#ee7b3a" opacity=".18" />
       <circle cx="82" cy="96" r="7" fill="#ee7b3a" opacity=".18" />
       <g className="eyes">
-        <circle cx="46" cy="82" r="5" fill="#16171a" />
-        <circle cx="74" cy="82" r="5" fill="#16171a" />
-        <circle cx="47.6" cy="80.2" r="1.6" fill="#fff" />
-        <circle cx="75.6" cy="80.2" r="1.6" fill="#fff" />
+        <circle cx="46" cy="81.5" r="6.4" fill="#16171a" />
+        <circle cx="74" cy="81.5" r="6.4" fill="#16171a" />
+        <circle cx="48" cy="79.2" r="2.1" fill="#fff" />
+        <circle cx="76" cy="79.2" r="2.1" fill="#fff" />
       </g>
       <path d="M56 91 h8 l-4 4.5 z" fill="#ee7b3a" />
       <path d="M60 95.5 q-3 5 -7 3 M60 95.5 q3 5 7 3" fill="none" stroke="#16171a" strokeWidth="1.6" strokeLinecap="round" />

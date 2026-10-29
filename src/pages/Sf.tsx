@@ -21,7 +21,7 @@ export default function Sf() {
     <main className="sf">
       <section className="sf-intro">
         <div className="sf-intro-text">
-          <h1>{person.name}</h1>
+          <h1 className="metal">{person.name}</h1>
           <p className="sf-role">Founder, <a href={startup.url} target="_blank" rel="noreferrer">Khanflow</a></p>
           <p>{person.intro}</p>
           <p className="sf-mission">{person.mission}</p>
@@ -64,7 +64,7 @@ export default function Sf() {
         <h2>FAQ</h2>
         <dl className="sf-faq">
           <dt>{faq.q}</dt>
-          <dd>{faq.a}</dd>
+          <dd className="metal-gold">{faq.a}</dd>
         </dl>
       </section>
 

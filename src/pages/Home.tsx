@@ -3,6 +3,7 @@ import { motion, useInView } from 'framer-motion'
 import Rabbit from '../components/Rabbit'
 import Chat from '../components/Chat'
 import Globe from '../components/Globe'
+import StarTrail, { type StarTrailHandle } from '../components/StarTrail'
 import { GitHubIcon, LinkedInIcon, MailIcon, PhoneIcon } from '../components/Icons'
 import { getTimeline } from '../api/mock'
 import { contacts, person, places, startup, story, type TimelineEntry } from '../content'
@@ -48,6 +49,7 @@ export default function Home() {
   const pathRef = useRef<SVGPathElement>(null)
   const textRef = useRef<SVGTextElement>(null)
   const linkRef = useRef<HTMLAnchorElement>(null)
+  const trail = useRef<StarTrailHandle>(null)
 
   // Parabolic leap: from low on the left (where the credentials will appear), high up over the page,
   // down to the bottom-right corner.
@@ -163,6 +165,7 @@ export default function Home() {
       if (path) {
         const p = path.getPointAtLength(e * path.getTotalLength())
         setFlightPt({ x: p.x - RABBIT * 0.5, y: p.y - RABBIT * 0.6 })
+        trail.current?.push(p.x, p.y - window.scrollY)
       }
       setProgress(e)
       if (t < 1) raf = requestAnimationFrame(tick)
@@ -214,6 +217,7 @@ export default function Home() {
     const x = Math.min(Math.max(e.clientX - d.dx, -20), window.innerWidth - RABBIT + 20)
     const y = Math.min(Math.max(e.clientY - d.dy, 0), window.innerHeight - RABBIT)
     setPos({ x, y })
+    trail.current?.push(x + RABBIT * 0.5, y + RABBIT * 0.6)
   }
   const onRabbitUp = (e: React.PointerEvent) => {
     const d = dragState.current
@@ -233,7 +237,7 @@ export default function Home() {
           transition={{ duration: 0.9, ease: 'easeOut' }}
         >
           <img className="bridge" src="/img/bridge-gold.png" alt="" aria-hidden="true" />
-          <h1 className="name" ref={nameRef}>{person.name.toUpperCase()}.</h1>
+          <h1 className="name metal" ref={nameRef}>{person.name.toUpperCase()}.</h1>
         </motion.div>
 
         <div className="creds">
@@ -245,11 +249,12 @@ export default function Home() {
             const done = t0 + (letters.length - 1) * LETTER_STAGGER + LETTER_MS / 1000
             return (
               <div key={c} className="cred" ref={i === 0 ? founderRef : undefined} aria-label={c}>
-                <span className="cred-word" aria-hidden="true">
+                <span className="cred-word metal-letters" aria-hidden="true">
                   <span className="cred-tall">
                     {letters.map((ch, j) => (
+                      // --i lives on a plain wrapper: framer won't animate an element whose style carries a CSS variable
+                      <span key={j} className="cred-slot" style={{ '--i': j } as React.CSSProperties}>
                       <motion.span
-                        key={j}
                         className="cred-letter"
                         initial={false}
                         animate={shown ? { opacity: 1, x: 0 } : { opacity: 0, x: '100vw' }}
@@ -257,6 +262,7 @@ export default function Home() {
                       >
                         {ch}
                       </motion.span>
+                      </span>
                     ))}
                   </span>
                 </span>
@@ -288,6 +294,18 @@ export default function Home() {
           })}
         </div>
 
+        {/* shared brushed-gold fill for the dashes */}
+        <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
+          <defs>
+            <linearGradient id="gold-metal" x1="0" y1="1" x2="0.4" y2="0">
+              <stop offset="0" stopColor="#9a7023" />
+              <stop offset=".35" stopColor="#f8dd95" />
+              <stop offset=".6" stopColor="#c8963a" />
+              <stop offset="1" stopColor="#ffecb0" />
+            </linearGradient>
+          </defs>
+        </svg>
+
         {geom && (
           <svg className="arc" aria-hidden="true">
             <path ref={pathRef} d={geom.d} fill="none" />
@@ -295,7 +313,7 @@ export default function Home() {
           </svg>
         )}
         {textArc && (
-          <a className="arc-link" href={startup.url} target="_blank" rel="noreferrer" aria-label="khanflow.com">
+          <a className="arc-link no-glow" href={startup.url} target="_blank" rel="noreferrer" aria-label="khanflow.com">
             <svg className="arc arc-text-layer" aria-hidden="true">
               <text ref={textRef} className="arc-text" dy="-16">
                 <textPath href="#arc-text-path" {...(textArc.narrow ? { startOffset: '100%', textAnchor: 'end' } : {})}>
@@ -312,6 +330,7 @@ export default function Home() {
       <Story />
       <Cta linkRef={linkRef} onNear={setExcited} />
 
+      <StarTrail ref={trail} />
       <div
         className={`robbit ${rabbitXY.x + RABBIT / 2 > window.innerWidth / 2 ? 'on-right' : ''} ${phase === 'intro' ? 'is-hidden' : ''} ${phase === 'landed' ? 'is-landed' : ''} ${phase === 'landed' && !pos ? 'hop' : ''}`}
         style={{ left: rabbitXY.x, top: rabbitXY.y, width: RABBIT }}
@@ -349,8 +368,8 @@ function Story() {
         <motion.p className="story-lead" initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }}>
           {story[0]}
         </motion.p>
-        <motion.p className="story-punch" initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, delay: 0.25 }}>
-          {story[1].replace(/SF\.$/, '')}<em>SF.</em>
+        <motion.p className="story-punch metal" initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, delay: 0.25 }}>
+          {story[1].replace(/SF\.$/, '')}<em className="metal-gold">SF.</em>
         </motion.p>
 
         <ol className="timeline">
@@ -400,7 +419,7 @@ function Cta({ linkRef, onNear }: { linkRef: React.RefObject<HTMLAnchorElement |
       <p className="cta-kicker">Check it out:</p>
       <a
         ref={linkRef}
-        className="cta-link"
+        className="cta-link metal-gold"
         href={startup.url}
         target="_blank"
         rel="noreferrer"

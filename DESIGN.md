@@ -3,13 +3,18 @@
 Audience: startup investors. Two routes share one content file (`src/content.ts`) and one mock API (`src/api/mock.ts`).
 
 ## Visual system
+Night theme: silver and gold on a deep navy-black background.
 | Token | Value | Use |
 |---|---|---|
-| `--ink` | `#16171a` | text, continents |
-| `--paper` | `#f6f4f0` | page background (warm white) |
-| `--silver` | `#b9bec6` / `--silver-deep` `#8a9099` | rabbit, rules, globe rim |
-| `--gold` | `#d9a441` | bridge, pins, check |
-| `--sunset` | `#ee7b3a` | links, accents, rabbit nose |
+| `--paper` | `#060a14` (radial lift to `#101b33` up top) | page background |
+| `--ink` | `#e4e8ee` | body text |
+| `--metal-silver` | brushed silver gradient | name, credentials, headlines, continents |
+| `--metal-gold` | brushed gold gradient | KHANFLOW.COM, dashes, accents, active toggle |
+| `--glow` | `240, 200, 110` | cursor light and hover glow |
+
+- Big headers (name, credentials, story headline, KHANFLOW.COM, /sf name and answer) use the metal gradients with a slow back-and-forth gleam.
+- The pointer carries a soft gold light that swells over anything interactive. Links, buttons and pins glow gold on hover.
+- The rabbit is a soft moonlit silver-white, and leaves a shooting-star trail (in flight or while dragged) that lingers about 3s before fading.
 
 Type: **Michroma** is the display font (`--display`: FOUNDER / EX-ORACLE / VANDERBILT, KHANFLOW.COM): extended and squared-off, stretched 1.5× taller. **Fredoka** (`--rounded`) is for the name and softer headings, and **Nunito** for body text. No serifs anywhere.
 Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration keyed to transparent orange-gold by `scripts/bridge.mjs`).
@@ -49,7 +54,7 @@ A single column taking the middle 50% of the screen on desktop (full width minus
 4. FAQ: "Favorite city" "SF."
 
 ## Shared components
-- **Header**: an `MK` monogram on the left and a route toggle (`Studio` / `SF`) on the right. Small and translucent.
+- **Header**: just the route toggle (`Studio` / `SF`) at the top right. Small and translucent.
 - **Robbit chat**: on `/` the landed rabbit is the chat. Click it and a speech bubble opens: "Hi! I'm Robbit, your furry friend. Ask me anything!" On `/sf` a small bunny button sits at the bottom-right. `sendChat()` is mocked with keyword answers drawn from `content.ts`. The real version would be a server route calling the Claude API.
 
 ## Accessibility & motion

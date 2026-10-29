@@ -1,23 +1,31 @@
 :root {
-  --ink: #16171a;
-  --ink-soft: #5d6168;
-  --paper: #f6f4f0;
-  --silver: #c3c7ce;
-  --silver-deep: #8a9099;
-  --gold: #d9a441;
-  --gold-deep: #b9832a;
-  --sunset: #ee7b3a;
+  /* night palette: text is silver on deep navy-black; gold is the accent */
+  --ink: #e4e8ee;
+  --ink-soft: #9ba4b3;
+  --paper: #060a14;
+  --paper-2: #0c1426;
+  --panel: rgba(14, 21, 38, .92);
+  --line: rgba(201, 206, 214, .16);
+  --silver: #c9ced6;
+  --silver-deep: #7f8899;
+  --gold: #e0b45a;
+  --gold-deep: #c8963a;
+  --sunset: #f0c66e; /* accents are bright gold now */
+  --glow: 240, 200, 110; /* rgb of the hover/cursor glow */
+  /* brushed-metal gradients, used for text (background-clip) and fills */
+  --metal-silver: linear-gradient(100deg, #7f8796 0%, #f5f7fb 18%, #aab1be 36%, #eef1f6 54%, #8d95a3 72%, #e3e7ee 90%, #9aa2b0 100%);
+  --metal-gold: linear-gradient(100deg, #9a7023 0%, #f8dd95 18%, #c8963a 36%, #ffecb0 54%, #a97b27 72%, #ecc76d 90%, #b8862f 100%);
   --rounded: 'Fredoka', 'Nunito', system-ui, sans-serif;
   --body: 'Nunito', system-ui, sans-serif;
   --display: 'Michroma', 'Nunito', system-ui, sans-serif; /* display font: extended, squared-off */
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; overflow-x: clip; }
 body {
   margin: 0;
-  background: var(--paper);
+  background: radial-gradient(120% 80% at 70% 0%, #101b33 0%, var(--paper) 55%) fixed, var(--paper);
   color: var(--ink);
   font-family: var(--body);
   -webkit-font-smoothing: antialiased;
@@ -25,31 +33,63 @@ body {
 }
 a { color: inherit; }
 button { font: inherit; }
-::selection { background: var(--gold); color: var(--ink); }
+::selection { background: var(--gold); color: var(--paper); }
+
+/* metallic text: a brushed gradient that slowly sweeps back and forth */
+.metal, .metal-gold {
+  background-image: var(--metal-silver); background-size: 260% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shimmer 7s ease-in-out infinite alternate;
+}
+.metal-gold { background-image: var(--metal-gold); }
+@keyframes shimmer { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+
+/* letter-by-letter metal: each letter paints its own slice of one shared gradient, so the
+   word reads as a single brushed surface even while the letters move independently */
+@property --sheen { syntax: '<length>'; inherits: true; initial-value: 0px; }
+.metal-letters { --sheen: 0px; animation: sheen 7s ease-in-out infinite alternate; }
+.metal-letters .cred-letter {
+  background-image: var(--metal-silver); background-size: 14em 100%;
+  background-position: calc(var(--sheen) - var(--i) * 1em) 50%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+@keyframes sheen { to { --sheen: -8em; } }
+
+/* the pointer's glow (fine pointers only) */
+.cursor-glow {
+  position: fixed; left: 0; top: 0; z-index: 100; pointer-events: none;
+  width: 240px; height: 240px; margin: -120px 0 0 -120px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--glow), .9) 0 3px, rgba(var(--glow), .35) 5px, rgba(var(--glow), .1) 22%, rgba(var(--glow), 0) 62%);
+  mix-blend-mode: screen; opacity: 0; transition: opacity .3s, width .25s, height .25s, margin .25s;
+}
+.cursor-glow.is-on { opacity: 1; }
+.cursor-glow.is-hot { width: 320px; height: 320px; margin: -160px 0 0 -160px; }
+@media (pointer: coarse) { .cursor-glow { display: none; } }
+
+/* anything interactive glows gold under the pointer */
+a, button, [role='button'], input { transition: filter .25s ease, box-shadow .25s ease, color .2s, border-color .2s; }
+/* (a filter would turn the element into a containing block, so wrappers of positioned layers opt out with .no-glow) */
+:is(a, button, [role='button']):not(.no-glow):is(:hover, :focus-visible) {
+  filter: drop-shadow(0 0 6px rgba(var(--glow), .75)) drop-shadow(0 0 18px rgba(var(--glow), .35));
+}
 
 .site-header {
   position: fixed; inset: 0 0 auto 0; z-index: 40;
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex; justify-content: flex-end; align-items: center;
   padding: 18px clamp(16px, 4vw, 40px);
   pointer-events: none;
 }
 .site-header > * { pointer-events: auto; }
-.monogram {
-  font-family: var(--rounded); font-weight: 600; font-size: 16px; letter-spacing: .04em;
-  text-decoration: none; color: var(--ink);
-  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
-  background: linear-gradient(145deg, #fff, var(--silver)); box-shadow: 0 1px 0 #fff inset, 0 2px 8px rgba(0,0,0,.08);
-}
 .route-toggle {
   display: flex; gap: 2px; padding: 3px; border-radius: 999px;
-  background: rgba(255,255,255,.7); backdrop-filter: blur(8px);
-  border: 1px solid rgba(0,0,0,.06);
+  background: rgba(12, 20, 38, .7); backdrop-filter: blur(8px);
+  border: 1px solid var(--line);
 }
 .route-toggle a {
   font-size: 13px; font-weight: 700; text-decoration: none; letter-spacing: .03em;
   padding: 6px 14px; border-radius: 999px; color: var(--ink-soft);
 }
-.route-toggle a.active { background: var(--ink); color: #fff; }
+.route-toggle a.active { background: var(--metal-gold); background-size: 220% 100%; color: var(--paper); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

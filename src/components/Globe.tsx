@@ -70,10 +70,21 @@ export default function Globe({ places, active, onActive, blurred, size = 900 }:
             <feGaussianBlur stdDeviation="6" result="b" />
             <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
+          <radialGradient id="ocean" cx="38%" cy="32%" r="75%">
+            <stop offset="0" stopColor="#14213d" />
+            <stop offset="1" stopColor="#070c18" />
+          </radialGradient>
+          {/* brushed silver continents, lit from the upper left */}
+          <linearGradient id="land-metal" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#f2f4f8" />
+            <stop offset=".3" stopColor="#aab1be" />
+            <stop offset=".55" stopColor="#e3e7ee" />
+            <stop offset="1" stopColor="#6f7787" />
+          </linearGradient>
         </defs>
-        <path d={path({ type: 'Sphere' }) ?? ''} fill="#ffffff" stroke="#a9aeb6" strokeWidth="3" filter="url(#rim-glow)" />
-        <path d={path(graticule) ?? ''} fill="none" stroke="#e7e8eb" strokeWidth=".6" />
-        <path d={path(land) ?? ''} fill="#1b1c1f" stroke="#ffffff" strokeWidth=".4" />
+        <path d={path({ type: 'Sphere' }) ?? ''} fill="url(#ocean)" stroke="#c9ced6" strokeWidth="2.5" filter="url(#rim-glow)" />
+        <path d={path(graticule) ?? ''} fill="none" stroke="#1d2a44" strokeWidth=".7" />
+        <path d={path(land) ?? ''} fill="url(#land-metal)" stroke="#0a1122" strokeWidth=".5" />
         {places.map((p) => {
           if (geoDistance(p.coords, center) > Math.PI / 2 - 0.08) return null
           const [x, y] = projection(p.coords) ?? [0, 0]
