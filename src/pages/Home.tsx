@@ -10,7 +10,8 @@ import './home.css'
 
 const reduced = typeof window !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
 const FLIGHT_MS = 2400
-const RABBIT = 124 // rendered head width; the head's centre sits at (0.5w, 0.6w)
+// rendered head width (smaller on phones so it clears the credential stack); the head's centre sits at (0.5w, 0.6w)
+const RABBIT = typeof window !== 'undefined' && window.innerWidth < 720 ? 96 : 124
 const ARC_TEXT = 'building khanflow.com ↗'
 const ARC_TEXT_OFFSET = 170 // px from the landing spot along the arc (desktop)
 const ARC_TEXT_RISE_NARROW = -13 // phones: negative = rotated 13° clockwise (slopes down as it reads), top-right of the band between name and FOUNDER
@@ -54,7 +55,7 @@ export default function Home() {
     if (!r) return
     const narrow = w < 720
     const start = { x: Math.min(r.right + (narrow ? 10 : 60), w - 70), y: r.bottom + window.scrollY + (narrow ? 30 : 50) }
-    const end = { x: Math.max(70, w * 0.075), y: h - (narrow ? 110 : 130) }
+    const end = { x: Math.max(70, w * 0.075), y: h - (narrow ? 96 : 130) }
     // Quadratic Bézier = true parabola. Pick the control point so the apex sits at `apex`.
     const apex = Math.max(70, h * 0.09)
     const c = { x: (start.x + end.x) / 2, y: apex - Math.sqrt((apex - start.y) * (apex - end.y)) }
@@ -263,7 +264,7 @@ export default function Home() {
                 animate={shown > i ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 2.4, y: -40 }}
                 transition={shown > i ? { type: 'spring', stiffness: 700, damping: 22, mass: 0.9 } : { duration: 0 }}
               >
-                {c.toUpperCase()}
+                <span className="cred-tall">{c.toUpperCase()}</span>
               </motion.span>
               {/* tapered dash: heavy at the foot, hairline at the tip, drawn bottom-up */}
               <motion.svg

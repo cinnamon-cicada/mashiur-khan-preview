@@ -16,14 +16,16 @@
   object-fit: fill; opacity: .32;
 }
 
-.creds { position: absolute; left: 41vw; top: 33vh; z-index: 2; }
-.cred { position: relative; display: flex; align-items: center; gap: .15em; height: clamp(66px, 8.6vw, 140px); }
+.creds { position: absolute; left: 41vw; top: 28vh; z-index: 2; }
+.cred { position: relative; display: flex; align-items: center; gap: .15em; height: clamp(99px, 12.9vw, 210px); }
+/* letters stretched 1.5× taller, same width */
+.cred-tall { display: inline-block; transform: scaleY(1.5); transform-origin: 50% 55%; }
 .cred-word {
   display: inline-block; transform-origin: 30% 60%;
   font-family: var(--display); font-weight: 600; letter-spacing: -.015em; line-height: 1;
   font-size: clamp(54px, 7.4vw, 128px); color: var(--ink);
 }
-.dash { width: clamp(24px, 2.8vw, 42px); height: auto; overflow: visible; margin-left: .35em; align-self: flex-start; margin-top: .12em; }
+.dash { width: clamp(24px, 2.8vw, 42px); height: auto; overflow: visible; margin-left: .35em; align-self: center; transform: scaleY(1.5); }
 .dash path { fill: var(--gold); }
 
 .chevron {
@@ -139,7 +141,7 @@
   .creds { left: 16px; top: max(250px, 31vh); } /* leaves room for the arc text above */
   .arc-text { font-size: 15px; }
   .cred-word { font-size: clamp(44px, 13vw, 72px); }
-  .cred { height: clamp(52px, 14vw, 80px); }
+  .cred { height: clamp(66px, 18vw, 110px); }
   .story { grid-template-columns: 1fr; padding: 12vh 16px 8vh; }
   .globe-wrap { width: 130vw; margin: 4vh 0 0 -4vw; }
   .cta { padding: 18vh 16px 0; }
