@@ -26,7 +26,7 @@ Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration 
 ```
 - `MASHIUR KHAN.` sits top-right, light and wide-tracked, and fades in. Behind it the bridge silhouette stretches past both ends of the name and bleeds off the right edge at low opacity.
 - The rabbit head starts beside FOUNDER, arcs up and over to the left, then drops to the bottom-left. It spins fast with ears fluttering. `building khanflow.com ↗` is set along the descending part of the arc, and each letter unlocks as the rabbit passes it.
-- On phones there's no room beside the credentials, so `building khanflow.com ↗` instead rides a gentle, nearly level bow centred in the band between the name and FOUNDER. The credentials sit lower to make room.
+- On phones there's no room beside the credentials, so `building khanflow.com ↗` instead rides a gentle bow rotated 13° clockwise, tucked into the right side of the band between the name and FOUNDER. The credentials sit lower to make room.
 - The rabbit lands with a small hop and its arms bud out. From then on it is `position: fixed` and draggable. **It is Robbit:** clicking it opens the chat as a speech bubble above its head.
 - `FOUNDER` slams in (large, rounded, left-aligned stack, centre of the page), and a tapered gold dash (heavy at the foot, hairline at the tip) draws from the bottom up. A small chevron under the newest credential bobs up and down.
 - A faded `Press any key` hint: each key press slams in the next credential (`EX-ORACLE`, then `VANDERBILT`), each with its own check, and the chevron moves down. Scrolling reveals all of them.

@@ -14,7 +14,7 @@ const FLIGHT_MS = 2400
 const RABBIT = 124 // rendered head width; the head's centre sits at (0.5w, 0.6w)
 const ARC_TEXT = 'building khanflow.com ↗'
 const ARC_TEXT_OFFSET = 170 // px from the landing spot along the arc (desktop)
-const ARC_TEXT_RISE_NARROW = 8 // phones: degrees the text climbs as it reads, in the band between name and FOUNDER
+const ARC_TEXT_RISE_NARROW = -13 // phones: negative = rotated 13° clockwise (slopes down as it reads), top-right of the band between name and FOUNDER
 const NARROW_UNLOCK = [0.06, 0.4] // phones: share of the flight over which letters unlock
 const ARC_TEXT_TILT = 15 // degrees clockwise, to sit closer to the leap's line
 
@@ -93,15 +93,16 @@ export default function Home() {
       if (!r || !n) return
       const rad = (ARC_TEXT_RISE_NARROW * Math.PI) / 180
       const chord = seg * 0.97
-      const bow = chord * 0.1 // bulge up-left of the reading direction
+      const bow = chord * 0.1 // sags down-right of the chord, so the right end curls up
       // centre the lettering in the band between the name and FOUNDER; glyphs sit ~20px above the
-      // path (dy + ascent) and the bow lifts the middle by about half its height
+      // path (dy + ascent) and the sag lowers the middle by about half its height
       const band = (n.bottom + r.top) / 2 + window.scrollY
-      const mid = { x: window.innerWidth / 2, y: band + 20 + bow / 2 }
       const dx = (chord / 2) * Math.cos(rad), dy = (chord / 2) * Math.sin(rad)
+      // pushed right: the text's end sits just inside the right edge
+      const mid = { x: window.innerWidth - 18 - dx, y: band + 20 - bow / 2 }
       const a = { x: mid.x - dx, y: mid.y + dy }
       const b = { x: mid.x + dx, y: mid.y - dy }
-      const c = { x: mid.x - Math.sin(rad) * bow * 2, y: mid.y - Math.cos(rad) * bow * 2 }
+      const c = { x: mid.x + Math.sin(rad) * bow * 2, y: mid.y + Math.cos(rad) * bow * 2 }
       setTextArc({ d: `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`, seg, mid, offset: 0, tilt: 0, narrow })
       return
     }
@@ -129,7 +130,9 @@ export default function Home() {
       const arcLen = arc.getTotalLength()
       const [p0, p1] = NARROW_UNLOCK
       setUnlockAt([...ARC_TEXT].map((_, i) => {
-        const f = t.getSubStringLength(0, i + 1) / arcLen
+        // phones right-align the lettering to the path's end, so it starts after the slack
+        const lead = textArc.narrow ? arcLen - t.getComputedTextLength() : 0
+        const f = (lead + t.getSubStringLength(0, i + 1)) / arcLen
         // phones: the rabbit crosses the text right-to-left on its way up, so the end unlocks first
         return textArc.narrow ? len * (p0 + (1 - f) * (p1 - p0)) : len - textArc.offset - f * textArc.seg + 20
       }))
@@ -313,7 +316,7 @@ export default function Home() {
           <a className="arc-link" href={startup.url} target="_blank" rel="noreferrer" aria-label="khanflow.com">
             <svg className="arc arc-text-layer" aria-hidden="true">
               <text ref={textRef} className="arc-text" dy="-16">
-                <textPath href="#arc-text-path">
+                <textPath href="#arc-text-path" {...(textArc.narrow ? { startOffset: '100%', textAnchor: 'end' } : {})}>
                   {[...ARC_TEXT].map((ch, i) => (
                     <tspan key={i} className={travelled >= (unlockAt[i] ?? Infinity) ? 'on' : ''}>{ch}</tspan>
                   ))}
