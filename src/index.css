@@ -55,6 +55,16 @@ button { font: inherit; }
 }
 @keyframes sheen { to { --sheen: -8em; } }
 
+/* sparse pulsing stars behind everything */
+.stars { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.stars i {
+  position: absolute; border-radius: 50%; background: #e9edf4;
+  box-shadow: 0 0 6px 1px rgba(233, 237, 244, .55);
+  animation: twinkle 5s ease-in-out infinite;
+}
+.stars i.is-gold { background: #f6dc9a; box-shadow: 0 0 7px 1px rgba(var(--glow), .6); }
+@keyframes twinkle { 0%, 100% { opacity: .12; transform: scale(.7); } 50% { opacity: .9; transform: scale(1.25); } }
+
 /* the pointer's glow (fine pointers only) */
 .cursor-glow {
   position: fixed; left: 0; top: 0; z-index: 100; pointer-events: none;

@@ -39,13 +39,6 @@
 @keyframes bob { 50% { transform: translateY(7px); } }
 
 .arc { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; }
-.arc-link { text-decoration: none; }
-.arc-text-layer { z-index: 3; }
-.arc-text { font-family: var(--body); font-weight: 800; font-size: clamp(20px, 1.9vw, 28px); letter-spacing: .05em; pointer-events: auto; cursor: pointer; }
-.arc-text tspan { fill: var(--sunset); opacity: 0; transition: opacity .25s, fill .2s; }
-.arc-text tspan.on { opacity: 1; }
-.arc-link:hover .arc-text tspan.on { fill: #fff1c9; }
-.arc-link:hover .arc-text { filter: drop-shadow(0 0 6px rgba(var(--glow), .8)); }
 
 /* ---------- rabbit (fixed, draggable) ---------- */
 .star-trail { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 29; pointer-events: none; }
@@ -140,8 +133,7 @@
 @media (max-width: 720px) {
   .name-wrap { right: 16px; top: 78px; }
   .name { font-size: clamp(22px, 6.4vw, 34px); letter-spacing: .1em; }
-  .creds { top: max(250px, 31vh); } /* leaves room for the arc text above */
-  .arc-text { font-size: 15px; }
+  .creds { top: max(250px, 31vh); }
   .cred-word { font-size: clamp(24px, 8.4vw, 52px); }
   .cred { height: clamp(66px, 18vw, 110px); }
   .story { grid-template-columns: 1fr; padding: 12vh 16px 8vh; }

@@ -4,12 +4,14 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './index.css'
 import Header from './components/Header'
 import CursorGlow from './components/CursorGlow'
+import Stars from './components/Stars'
 import Home from './pages/Home'
 import Sf from './pages/Sf'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
+      <Stars />
       <Header />
       <CursorGlow />
       <Routes>

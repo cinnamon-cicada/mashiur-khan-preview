@@ -14,6 +14,7 @@ Night theme: silver and gold on a deep navy-black background.
 
 - Big headers (name, credentials, story headline, KHANFLOW.COM, /sf name and answer) use the metal gradients with a slow back-and-forth gleam.
 - The pointer carries a soft gold light that swells over anything interactive. Links, buttons and pins glow gold on hover.
+- A very sparse field of faint stars (silver, a few gold) pulses slowly behind everything.
 - The rabbit is a soft moonlit silver-white, and leaves a shooting-star trail (in flight or while dragged) that lingers about 3s before fading.
 
 Type: **Michroma** is the display font (`--display`: FOUNDER / EX-ORACLE / VANDERBILT, KHANFLOW.COM): extended and squared-off, stretched 1.5× taller. **Fredoka** (`--rounded`) is for the name and softer headings, and **Nunito** for body text. No serifs anywhere.
@@ -24,13 +25,12 @@ Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration 
 ```
                                    MASHIUR KHAN.  ░░bridge░░░░░░░→ (off-page)
                  ╭───────────────╮
-  FOUNDER    ╱  ╱                 ╲  building
-  EX-ORACLE ╱  ╱ (rabbit starts)   ╲   khanflow.com ↗
+  FOUNDER    ╱  ╱                 ╲
+  EX-ORACLE ╱  ╱ (rabbit starts)   ╲
   VANDERBILT ╱   ˅                  ╲[chat] (rabbit)
 ```
 - `MASHIUR KHAN.` sits top-right, light and wide-tracked, and fades in. Behind it the bridge silhouette stretches past both ends of the name and bleeds off the right edge at low opacity.
-- The rabbit head starts low on the left (over where the credentials will appear), arcs up and over to the right, then drops to the bottom-right. It spins fast with ears fluttering. `building khanflow.com ↗` is set along the descending part of the arc, reading downhill, and each letter unlocks as the rabbit passes it.
-- On phones there's no room beside the credentials, so `building khanflow.com ↗` instead rides a gentle bow rotated 13° clockwise, tucked into the right side of the band between the name and FOUNDER. The credentials sit lower to make room.
+- The rabbit head starts low on the left (over where the credentials will appear), arcs up and over to the right, then drops to the bottom-right. It spins fast with ears fluttering.
 - The rabbit lands with a small hop and its arms bud out. From then on it is `position: fixed` and draggable. **It is Robbit:** clicking it opens the chat as a speech bubble beside it (to its left when it's on the right half of the screen).
 - As soon as the rabbit takes off, the credentials (a large left-aligned stack, 5vw from the left edge) slide in one letter at a time from the right edge of the screen, moving right to left; the leading letter arrives first, like a train pulling in. The bottom word starts first and each word's first letter lags the one below it: `VANDERBILT`, then `EX-ORACLE`, then `FOUNDER`. Once a word is in, a tapered gold dash (heavy at the foot, hairline at the tip) draws from the bottom up. A small chevron under `VANDERBILT` bobs up and down.
 

@@ -13,15 +13,10 @@ const reduced = typeof window !== 'undefined' && matchMedia('(prefers-reduced-mo
 const FLIGHT_MS = 2400
 // rendered head width (smaller on phones so it clears the credential stack); the head's centre sits at (0.5w, 0.6w)
 const RABBIT = typeof window !== 'undefined' && window.innerWidth < 720 ? 96 : 124
-const ARC_TEXT = 'building khanflow.com ↗'
-const ARC_TEXT_OFFSET = 170 // px from the landing spot along the arc (desktop)
-const ARC_TEXT_RISE_NARROW = -13 // phones: negative = rotated 13° clockwise (slopes down as it reads), top-right of the band between name and FOUNDER
-const NARROW_UNLOCK = [0.6, 0.9] // phones: share of the flight over which letters unlock (the falling leg)
 // credential slide-in: seconds between letters, between words' first letters, and per-letter duration
 const LETTER_STAGGER = 0.045
 const WORD_STAGGER = 0.32
 const LETTER_MS = 750
-const ARC_TEXT_TILT = -15 // degrees anticlockwise, to sit closer to the (mirrored) leap's line
 
 type Pt = { x: number; y: number }
 type Geom = { d: string; start: Pt; end: Pt }
@@ -34,9 +29,6 @@ export default function Home() {
   const [progress, setProgress] = useState(reduced ? 1 : 0)
   const [shown, setShown] = useState(reduced) // credentials revealed
   const [geom, setGeom] = useState<Geom | null>(null)
-  const [len, setLen] = useState(0)
-  const [unlockAt, setUnlockAt] = useState<number[]>([])
-  const [textArc, setTextArc] = useState<{ d: string; seg: number; mid: Pt; offset: number; tilt: number; narrow: boolean } | null>(null)
   const [pos, setPos] = useState<Pt | null>(null) // rabbit top-left once landed
   const [flightPt, setFlightPt] = useState<Pt>({ x: -200, y: -200 })
   const [chatOpen, setChatOpen] = useState(false)
@@ -45,9 +37,7 @@ export default function Home() {
 
   const heroRef = useRef<HTMLElement>(null)
   const founderRef = useRef<HTMLDivElement>(null)
-  const nameRef = useRef<HTMLHeadingElement>(null)
   const pathRef = useRef<SVGPathElement>(null)
-  const textRef = useRef<SVGTextElement>(null)
   const linkRef = useRef<HTMLAnchorElement>(null)
   const trail = useRef<StarTrailHandle>(null)
 
@@ -78,73 +68,6 @@ export default function Home() {
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
   }, [measure])
-
-  // Desktop: the arc text gets its own, more bowed path — a chord across the landing leg of the
-  // flight, pushed further out in the direction the flight path already bulges, then tilted.
-  // Phones: there's no room beside the credentials, so it rides a gentle, nearly level bow above them.
-  useLayoutEffect(() => {
-    const path = pathRef.current
-    if (!geom || !path) return
-    const L = path.getTotalLength()
-    setLen(L)
-    const narrow = window.innerWidth < 720
-    const fs = narrow ? 15 : Math.min(28, Math.max(20, window.innerWidth * 0.019)) // matches .arc-text
-    const seg = ARC_TEXT.length * fs * 0.66
-
-    if (narrow) {
-      const r = founderRef.current?.getBoundingClientRect()
-      const n = nameRef.current?.getBoundingClientRect()
-      if (!r || !n) return
-      const rad = (ARC_TEXT_RISE_NARROW * Math.PI) / 180
-      const chord = seg * 0.97
-      const bow = chord * 0.1 // arches outward: the middle bulges up, away from the credentials
-      // centre the lettering in the band between the name and FOUNDER; glyphs sit ~20px above the
-      // path (dy + ascent) and the arch lifts the middle by about half its height
-      const band = (n.bottom + r.top) / 2 + window.scrollY
-      const dx = (chord / 2) * Math.cos(rad), dy = (chord / 2) * Math.sin(rad)
-      // pushed right: the text's end sits just inside the right edge
-      const mid = { x: window.innerWidth - 36 - dx, y: band + 20 + bow / 2 }
-      const a = { x: mid.x - dx, y: mid.y + dy }
-      const b = { x: mid.x + dx, y: mid.y - dy }
-      const c = { x: mid.x - Math.sin(rad) * bow * 2, y: mid.y - Math.cos(rad) * bow * 2 }
-      setTextArc({ d: `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`, seg, mid, offset: 0, tilt: 0, narrow })
-      return
-    }
-
-    // reads downhill toward the landing spot: a is farther back along the flight, b nearer the end
-    const a = path.getPointAtLength(L - ARC_TEXT_OFFSET - seg)
-    const b = path.getPointAtLength(L - ARC_TEXT_OFFSET)
-    const m = path.getPointAtLength(L - ARC_TEXT_OFFSET - seg / 2)
-    const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
-    const chord = Math.hypot(b.x - a.x, b.y - a.y)
-    let nx = m.x - mid.x, ny = m.y - mid.y
-    const n = Math.hypot(nx, ny)
-    if (n < 1) { nx = b.y - a.y; ny = a.x - b.x } // fallback: left of the reading direction
-    const k = (0.5 * chord) / (n < 1 ? chord : n)
-    const c = { x: mid.x + nx * k, y: mid.y + ny * k }
-    setTextArc({ d: `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`, seg, mid, offset: ARC_TEXT_OFFSET, tilt: ARC_TEXT_TILT, narrow })
-  }, [geom])
-
-  // Forward flight distance at which each letter unlocks (mapped from its spot on the text arc).
-  useLayoutEffect(() => {
-    if (!textArc || !len) return
-    const compute = () => {
-      const t = textRef.current
-      const arc = document.getElementById('arc-text-path') as SVGPathElement | null
-      if (!t || !arc) return
-      const arcLen = arc.getTotalLength()
-      const [p0, p1] = NARROW_UNLOCK
-      setUnlockAt([...ARC_TEXT].map((_, i) => {
-        // phones right-align the lettering to the path's end, so it starts after the slack
-        const lead = textArc.narrow ? arcLen - t.getComputedTextLength() : 0
-        const f = (lead + t.getSubStringLength(0, i + 1)) / arcLen
-        // the rabbit crosses the text left-to-right on its way down, so letters unlock in reading order
-        return textArc.narrow ? len * (p0 + f * (p1 - p0)) : len - textArc.offset - (1 - f) * textArc.seg + 20
-      }))
-    }
-    compute()
-    document.fonts?.ready.then(compute)
-  }, [textArc, len])
 
   // Name fades in, the rabbit fades in at the launch spot, then it leaps.
   useEffect(() => {
@@ -225,8 +148,6 @@ export default function Home() {
     if (d && Math.hypot(e.clientX - d.sx, e.clientY - d.sy) < 5) setChatOpen((o) => !o)
   }
 
-  const travelled = progress * len
-
   return (
     <main className="home">
       <section className="hero" ref={heroRef}>
@@ -237,7 +158,7 @@ export default function Home() {
           transition={{ duration: 0.9, ease: 'easeOut' }}
         >
           <img className="bridge" src="/img/bridge-gold.png" alt="" aria-hidden="true" />
-          <h1 className="name metal" ref={nameRef}>{person.name.toUpperCase()}.</h1>
+          <h1 className="name metal">{person.name.toUpperCase()}.</h1>
         </motion.div>
 
         <div className="creds">
@@ -309,21 +230,7 @@ export default function Home() {
         {geom && (
           <svg className="arc" aria-hidden="true">
             <path ref={pathRef} d={geom.d} fill="none" />
-            {textArc && <path id="arc-text-path" d={textArc.d} fill="none" transform={`rotate(${textArc.tilt} ${textArc.mid.x} ${textArc.mid.y})`} />}
           </svg>
-        )}
-        {textArc && (
-          <a className="arc-link no-glow" href={startup.url} target="_blank" rel="noreferrer" aria-label="khanflow.com">
-            <svg className="arc arc-text-layer" aria-hidden="true">
-              <text ref={textRef} className="arc-text" dy="-16">
-                <textPath href="#arc-text-path" {...(textArc.narrow ? { startOffset: '100%', textAnchor: 'end' } : {})}>
-                  {[...ARC_TEXT].map((ch, i) => (
-                    <tspan key={i} className={travelled >= (unlockAt[i] ?? Infinity) ? 'on' : ''}>{ch}</tspan>
-                  ))}
-                </textPath>
-              </text>
-            </svg>
-          </a>
         )}
       </section>
 
