@@ -14,6 +14,7 @@ const FLIGHT_MS = 2400
 const RABBIT = 124 // rendered head width; the head's centre sits at (0.5w, 0.6w)
 const ARC_TEXT = 'building khanflow.com ↗'
 const ARC_TEXT_OFFSET = 170 // px from the landing spot along the arc
+const ARC_TEXT_TILT = 15 // degrees clockwise, to sit closer to the leap's line
 
 type Pt = { x: number; y: number }
 type Geom = { d: string; start: Pt; end: Pt }
@@ -28,7 +29,7 @@ export default function Home() {
   const [geom, setGeom] = useState<Geom | null>(null)
   const [len, setLen] = useState(0)
   const [unlockAt, setUnlockAt] = useState<number[]>([])
-  const [textArc, setTextArc] = useState<{ d: string; seg: number } | null>(null)
+  const [textArc, setTextArc] = useState<{ d: string; seg: number; mid: Pt } | null>(null)
   const [pos, setPos] = useState<Pt | null>(null) // rabbit top-left once landed
   const [flightPt, setFlightPt] = useState<Pt>({ x: -200, y: -200 })
   const [chatOpen, setChatOpen] = useState(false)
@@ -91,7 +92,7 @@ export default function Home() {
     if (n < 1) { nx = b.y - a.y; ny = a.x - b.x } // fallback: left of the reading direction
     const k = (0.5 * chord) / (n < 1 ? chord : n)
     const c = { x: mid.x + nx * k, y: mid.y + ny * k }
-    setTextArc({ d: `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`, seg })
+    setTextArc({ d: `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`, seg, mid })
   }, [geom])
 
   // Forward flight distance at which each letter unlocks (mapped from its spot on the text arc).
@@ -276,7 +277,7 @@ export default function Home() {
         {geom && (
           <svg className="arc" aria-hidden="true">
             <path ref={pathRef} d={geom.d} fill="none" />
-            {textArc && <path id="arc-text-path" d={textArc.d} fill="none" />}
+            {textArc && <path id="arc-text-path" d={textArc.d} fill="none" transform={`rotate(${ARC_TEXT_TILT} ${textArc.mid.x} ${textArc.mid.y})`} />}
           </svg>
         )}
         {textArc && (
