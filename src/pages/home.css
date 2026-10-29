@@ -24,7 +24,7 @@
   position: absolute; pointer-events: none; user-select: none;
   left: -28%; width: calc(128% + 6vw + 8vw);  /* overhangs the name on the left, bleeds off-page on the right */
   height: 290%; bottom: -85%;
-  object-fit: fill; opacity: .6; filter: hue-rotate(190deg) brightness(1.5) saturate(1.1); /* the gold source art, turned blue */
+  object-fit: fill; opacity: .32; filter: hue-rotate(190deg) brightness(1.5) saturate(1.1); /* the gold source art, turned blue */
 }
 
 .creds { position: absolute; left: 5vw; top: 28vh; z-index: 2; }
