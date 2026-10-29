@@ -21,8 +21,9 @@ export default function Rabbit({ flying, landed, excited, size = 112 }: Props) {
           <stop offset="1" stopColor="#bcc3ce" />
         </radialGradient>
         <linearGradient id="inner" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#f1bd78" />
-          <stop offset="1" stopColor="#eeac6c" />
+          {/* cool periwinkle inner ears, to sit with the blue palette */}
+          <stop offset="0" stopColor="#b9c8f2" />
+          <stop offset="1" stopColor="#9fb2e6" />
         </linearGradient>
       </defs>
 
@@ -44,15 +45,15 @@ export default function Rabbit({ flying, landed, excited, size = 112 }: Props) {
         d="M60 49 C80 48 95 60 98 78 C102 98 94 118 76 123 C68 125 52 125 44 123 C26 118 18 98 22 78 C25 60 40 50 60 49 Z"
         fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5"
       />
-      <circle cx="38" cy="96" r="7" fill="#ee7b3a" opacity=".18" />
-      <circle cx="82" cy="96" r="7" fill="#ee7b3a" opacity=".18" />
+      <circle cx="38" cy="96" r="7" fill="#7f9fe6" opacity=".22" />
+      <circle cx="82" cy="96" r="7" fill="#7f9fe6" opacity=".22" />
       <g className="eyes">
         <circle cx="46" cy="81.5" r="6.4" fill="#16171a" />
         <circle cx="74" cy="81.5" r="6.4" fill="#16171a" />
         <circle cx="48" cy="79.2" r="2.1" fill="#fff" />
         <circle cx="76" cy="79.2" r="2.1" fill="#fff" />
       </g>
-      <path d="M56 91 h8 l-4 4.5 z" fill="#ee7b3a" />
+      <path d="M56 91 h8 l-4 4.5 z" fill="#8a9fd8" />
       <path d="M60 95.5 q-3 5 -7 3 M60 95.5 q3 5 7 3" fill="none" stroke="#16171a" strokeWidth="1.6" strokeLinecap="round" />
 
     </svg>
