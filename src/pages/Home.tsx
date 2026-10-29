@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import Rabbit from '../components/Rabbit'
 import Chat from '../components/Chat'
@@ -327,7 +327,8 @@ export default function Home() {
   )
 }
 
-function Story() {
+// memo'd so the hero's per-frame flight updates don't re-render the globe (its paths cost ~10ms a render)
+const Story = memo(function Story() {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { amount: 0.3, once: true })
   const listRef = useRef<HTMLOListElement>(null)
@@ -378,9 +379,9 @@ function Story() {
       </div>
     </section>
   )
-}
+})
 
-function Cta({ linkRef, onNear }: { linkRef: React.RefObject<HTMLAnchorElement | null>; onNear: (v: boolean) => void }) {
+const Cta = memo(function Cta({ linkRef, onNear }: { linkRef: React.RefObject<HTMLAnchorElement | null>; onNear: (v: boolean) => void }) {
   const links = [
     { label: 'Email', href: `mailto:${contacts.email}`, icon: <MailIcon /> },
     { label: 'Phone', href: `tel:${contacts.phone.replace(/[^+\d]/g, '')}`, icon: <PhoneIcon /> },
@@ -426,4 +427,4 @@ function Cta({ linkRef, onNear }: { linkRef: React.RefObject<HTMLAnchorElement |
       </ul>
     </section>
   )
-}
+})

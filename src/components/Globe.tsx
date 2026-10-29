@@ -26,7 +26,10 @@ export default function Globe({ places, active, onActive, blurred, size = 900 }:
     () => geoOrthographic().scale(size / 2 - 8).translate([size / 2, size / 2]).rotate(rotate).clipAngle(90),
     [rotate, size],
   )
-  const path = geoPath(projection)
+  const paths = useMemo(() => {
+    const path = geoPath(projection)
+    return { sphere: path({ type: 'Sphere' }) ?? '', graticule: path(graticule) ?? '', land: path(land) ?? '' }
+  }, [projection])
 
   useEffect(() => {
     if (blurred || matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -82,9 +85,9 @@ export default function Globe({ places, active, onActive, blurred, size = 900 }:
             <stop offset="1" stopColor="#6f7787" />
           </linearGradient>
         </defs>
-        <path d={path({ type: 'Sphere' }) ?? ''} fill="url(#ocean)" stroke="#c9ced6" strokeWidth="2.5" filter="url(#rim-glow)" />
-        <path d={path(graticule) ?? ''} fill="none" stroke="#1d2a44" strokeWidth=".7" />
-        <path d={path(land) ?? ''} fill="url(#land-metal)" stroke="#0a1122" strokeWidth=".5" />
+        <path d={paths.sphere} fill="url(#ocean)" stroke="#c9ced6" strokeWidth="2.5" filter="url(#rim-glow)" />
+        <path d={paths.graticule} fill="none" stroke="#1d2a44" strokeWidth=".7" />
+        <path d={paths.land} fill="url(#land-metal)" stroke="#0a1122" strokeWidth=".5" />
         {places.map((p) => {
           if (geoDistance(p.coords, center) > Math.PI / 2 - 0.08) return null
           const [x, y] = projection(p.coords) ?? [0, 0]
