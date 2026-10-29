@@ -240,7 +240,8 @@ export default function Home() {
 
         <div className="creds">
           {person.credentials.map((c, i) => {
-            // bottom word starts first; each word's first letter lags the one below it
+            // letters arrive right to left, like a train pulling in from the left: the last letter lands first.
+            // bottom word starts first; each word's lead letter lags the one below it
             const t0 = (person.credentials.length - 1 - i) * WORD_STAGGER
             const letters = [...c.toUpperCase()]
             const done = t0 + (letters.length - 1) * LETTER_STAGGER + LETTER_MS / 1000
@@ -254,7 +255,7 @@ export default function Home() {
                         className="cred-letter"
                         initial={false}
                         animate={shown ? { opacity: 1, x: 0 } : { opacity: 0, x: '-0.9em' }}
-                        transition={shown ? { duration: LETTER_MS / 1000, ease: [0.2, 0.8, 0.2, 1], delay: t0 + j * LETTER_STAGGER } : { duration: 0 }}
+                        transition={shown ? { duration: LETTER_MS / 1000, ease: [0.2, 0.8, 0.2, 1], delay: t0 + (letters.length - 1 - j) * LETTER_STAGGER } : { duration: 0 }}
                       >
                         {ch}
                       </motion.span>
