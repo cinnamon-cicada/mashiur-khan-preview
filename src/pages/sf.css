@@ -4,8 +4,8 @@
 }
 .sf section { padding: 44px 0; border-top: 1px solid rgba(22, 23, 26, .09); }
 .sf section:first-child { border-top: 0; padding-top: 0; }
-.sf h1 { font-family: var(--display); font-weight: 500; font-size: 38px; letter-spacing: -.005em; line-height: 1.1; margin: 0; color: var(--ink); }
-.sf h2 { font-family: var(--display); font-weight: 500; font-size: 15px; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 16px; color: var(--silver-deep); }
+.sf h1 { font-family: var(--rounded); font-weight: 500; font-size: 38px; letter-spacing: -.005em; line-height: 1.1; margin: 0; color: var(--ink); }
+.sf h2 { font-family: var(--rounded); font-weight: 500; font-size: 15px; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 16px; color: var(--silver-deep); }
 .sf h2 a { color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; text-transform: none; letter-spacing: .01em; font-size: 22px; }
 .sf h2 a:hover { color: var(--sunset); }
 .sf p { margin: 0 0 12px; }
@@ -21,12 +21,12 @@
 
 .sf-photo {
   width: 148px; aspect-ratio: 4 / 5; border-radius: 14px; display: grid; place-items: center;
-  font-family: var(--display); font-size: 34px; color: #fff; letter-spacing: .06em;
+  font-family: var(--rounded); font-size: 34px; color: #fff; letter-spacing: .06em;
   background: linear-gradient(160deg, var(--silver) 0%, var(--gold) 70%, var(--sunset) 100%);
 }
 .sf-photo-sm { width: 64px; border-radius: 50%; aspect-ratio: 1; font-size: 22px; }
 
-.sf-lede { font-family: var(--display); font-size: 20px; color: var(--ink); }
+.sf-lede { font-family: var(--rounded); font-size: 20px; color: var(--ink); }
 .sf-cofounder { display: flex; align-items: center; gap: 14px; margin-top: 22px; font-weight: 700; }
 .sf-arrow { width: 54px; height: 14px; overflow: visible; }
 .sf-arrow path { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
@@ -41,7 +41,7 @@
 
 .sf-faq { margin: 0; }
 .sf-faq dt { font-weight: 700; }
-.sf-faq dd { margin: 4px 0 0; font-family: var(--display); font-size: 28px; color: var(--sunset); }
+.sf-faq dd { margin: 4px 0 0; font-family: var(--rounded); font-size: 28px; color: var(--sunset); }
 
 .sf-foot { padding-top: 40px; font-size: 13px; color: var(--silver-deep); }
 

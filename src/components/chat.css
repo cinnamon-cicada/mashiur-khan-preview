@@ -15,7 +15,7 @@
 @keyframes pop { from { opacity: 0; transform: translateX(-8px) scale(.9); } }
 
 .bubble-chat { width: min(320px, calc(100vw - 32px)); display: flex; flex-direction: column; cursor: auto; animation: pop .3s ease-out; }
-.chat-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px 6px; font-family: var(--display); font-weight: 600; }
+.chat-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px 6px; font-family: var(--rounded); font-weight: 600; }
 .chat-head button { border: 0; background: none; font-size: 20px; line-height: 1; cursor: pointer; color: var(--ink-soft); }
 .chat-list { max-height: 260px; overflow-y: auto; padding: 4px 12px; display: flex; flex-direction: column; gap: 6px; }
 .msg { margin: 0; padding: 8px 12px; border-radius: 14px; max-width: 88%; }

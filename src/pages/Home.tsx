@@ -16,7 +16,7 @@ const ARC_TEXT = 'building khanflow.com ↗'
 const ARC_TEXT_OFFSET = 170 // px from the landing spot along the arc
 
 type Pt = { x: number; y: number }
-type Geom = { d: string; dRev: string; start: Pt; end: Pt }
+type Geom = { d: string; start: Pt; end: Pt }
 
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
@@ -28,6 +28,7 @@ export default function Home() {
   const [geom, setGeom] = useState<Geom | null>(null)
   const [len, setLen] = useState(0)
   const [unlockAt, setUnlockAt] = useState<number[]>([])
+  const [textArc, setTextArc] = useState<{ d: string; seg: number } | null>(null)
   const [pos, setPos] = useState<Pt | null>(null) // rabbit top-left once landed
   const [flightPt, setFlightPt] = useState<Pt>({ x: -200, y: -200 })
   const [chatOpen, setChatOpen] = useState(false)
@@ -57,7 +58,6 @@ export default function Home() {
     const c = { x: (start.x + end.x) / 2, y: apex - Math.sqrt((apex - start.y) * (apex - end.y)) }
     setGeom({
       d: `M${start.x} ${start.y} Q${c.x} ${c.y} ${end.x} ${end.y}`,
-      dRev: `M${end.x} ${end.y} Q${c.x} ${c.y} ${start.x} ${start.y}`,
       start,
       end,
     })
@@ -72,19 +72,41 @@ export default function Home() {
     return () => window.removeEventListener('resize', onResize)
   }, [measure])
 
-  // Path length + the forward distance at which each arc letter unlocks.
+  // The arc text gets its own, more bowed path: a chord across the landing leg of the flight,
+  // pushed further out in the direction the flight path already bulges.
   useLayoutEffect(() => {
-    if (!geom || !pathRef.current) return
-    const L = pathRef.current.getTotalLength()
+    const path = pathRef.current
+    if (!geom || !path) return
+    const L = path.getTotalLength()
     setLen(L)
+    const fs = Math.min(28, Math.max(20, window.innerWidth * 0.019))
+    const seg = ARC_TEXT.length * fs * 0.66
+    const a = path.getPointAtLength(L - ARC_TEXT_OFFSET)
+    const b = path.getPointAtLength(L - ARC_TEXT_OFFSET - seg)
+    const m = path.getPointAtLength(L - ARC_TEXT_OFFSET - seg / 2)
+    const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
+    const chord = Math.hypot(b.x - a.x, b.y - a.y)
+    let nx = m.x - mid.x, ny = m.y - mid.y
+    const n = Math.hypot(nx, ny)
+    if (n < 1) { nx = b.y - a.y; ny = a.x - b.x } // fallback: left of the reading direction
+    const k = (0.5 * chord) / (n < 1 ? chord : n)
+    const c = { x: mid.x + nx * k, y: mid.y + ny * k }
+    setTextArc({ d: `M${a.x} ${a.y} Q${c.x} ${c.y} ${b.x} ${b.y}`, seg })
+  }, [geom])
+
+  // Forward flight distance at which each letter unlocks (mapped from its spot on the text arc).
+  useLayoutEffect(() => {
+    if (!textArc || !len) return
     const compute = () => {
       const t = textRef.current
-      if (!t) return
-      setUnlockAt([...ARC_TEXT].map((_, i) => L - (ARC_TEXT_OFFSET + t.getSubStringLength(0, i + 1)) + 20))
+      const arc = document.getElementById('arc-text-path') as SVGPathElement | null
+      if (!t || !arc) return
+      const arcLen = arc.getTotalLength()
+      setUnlockAt([...ARC_TEXT].map((_, i) => len - ARC_TEXT_OFFSET - (t.getSubStringLength(0, i + 1) / arcLen) * textArc.seg + 20))
     }
     compute()
     document.fonts?.ready.then(compute)
-  }, [geom])
+  }, [textArc, len])
 
   // Name fades in, the rabbit fades in at the launch spot, then it leaps.
   useEffect(() => {
@@ -219,14 +241,17 @@ export default function Home() {
               >
                 {c.toUpperCase()}
               </motion.span>
-              <svg className="check" viewBox="0 0 40 64" aria-hidden="true">
-                <motion.path
-                  d="M4 40 L13 58 L36 4"
-                  initial={false}
-                  animate={{ pathLength: shown > i ? 1 : 0, opacity: shown > i ? 1 : 0 }}
-                  transition={{ duration: 0.28, delay: shown > i ? 0.3 : 0, ease: 'easeIn' }}
-                />
-              </svg>
+              {/* tapered dash: heavy at the foot, hairline at the tip, drawn bottom-up */}
+              <motion.svg
+                className="dash"
+                viewBox="0 0 40 64"
+                aria-hidden="true"
+                initial={false}
+                animate={{ clipPath: shown > i ? 'inset(0% 0% 0% 0%)' : 'inset(100% 0% 0% 0%)' }}
+                transition={{ duration: 0.26, delay: shown > i ? 0.3 : 0, ease: 'easeOut' }}
+              >
+                <path d="M2.5 58.5 C1.6 61.6 3.4 63.5 6.6 63.5 L13.4 63.5 C16.2 63.5 17.4 62 18.2 59.6 L37.6 3.2 C38 1.8 36.6 1.2 35.9 2.4 Z" />
+              </motion.svg>
               {shown === i + 1 && i < 2 && (
                 <motion.p className="press-key" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i === 0 ? 1.1 : 0.4 }}>
                   {touch ? 'Tap or scroll' : 'Press any key'}
@@ -251,14 +276,14 @@ export default function Home() {
         {geom && (
           <svg className="arc" aria-hidden="true">
             <path ref={pathRef} d={geom.d} fill="none" />
-            <path id="arc-rev" d={geom.dRev} fill="none" />
+            {textArc && <path id="arc-text-path" d={textArc.d} fill="none" />}
           </svg>
         )}
-        {geom && (
+        {textArc && (
           <a className="arc-link" href={startup.url} target="_blank" rel="noreferrer" aria-label="khanflow.com">
             <svg className="arc arc-text-layer" aria-hidden="true">
               <text ref={textRef} className="arc-text" dy="-16">
-                <textPath href="#arc-rev" startOffset={ARC_TEXT_OFFSET}>
+                <textPath href="#arc-text-path">
                   {[...ARC_TEXT].map((ch, i) => (
                     <tspan key={i} className={travelled >= (unlockAt[i] ?? Infinity) ? 'on' : ''}>{ch}</tspan>
                   ))}
@@ -339,8 +364,10 @@ function Story() {
       </div>
 
       <div className="story-right">
-        <Globe places={places} active={active} onActive={setActive} blurred={!inView} />
-        <p className="globe-hint">Drag to spin · hover a pin</p>
+        <div className="globe-wrap">
+          <Globe places={places} active={active} onActive={setActive} blurred={!inView} />
+          <p className="globe-hint">Drag to spin · hover a pin</p>
+        </div>
       </div>
     </section>
   )

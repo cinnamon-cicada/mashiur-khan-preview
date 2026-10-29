@@ -34,9 +34,9 @@ export default function Rabbit({ flying, landed, excited, size = 112 }: Props) {
         <ellipse cx="76" cy="32" rx="5" ry="20" fill="url(#inner)" />
       </g>
 
-      {/* stubby arms that pop straight out from the cheeks */}
-      <g className="arm arm-l"><path d="M26 98 C16 90 4 92 3 100 C2 108 14 110 26 106 Z" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" /></g>
-      <g className="arm arm-r"><path d="M94 98 C104 90 116 92 117 100 C118 108 106 110 94 106 Z" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" /></g>
+      {/* stubby arms that pop straight out from the lower sides, below the cheeks */}
+      <g className="arm arm-l"><path d="M32 112 C21 105 7 108 6 116 C5 124 19 125 34 120 Z" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" /></g>
+      <g className="arm arm-r"><path d="M88 112 C99 105 113 108 114 116 C115 124 101 125 86 120 Z" fill="url(#fur)" stroke="#9aa0a8" strokeWidth="1.5" /></g>
 
       {/* bun-shaped head: narrower crown, full cheeks, soft flat chin */}
       <path

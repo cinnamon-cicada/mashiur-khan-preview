@@ -7,9 +7,9 @@
   --gold: #d9a441;
   --gold-deep: #b9832a;
   --sunset: #ee7b3a;
-  --display: 'Fredoka', 'Nunito', system-ui, sans-serif;
+  --rounded: 'Fredoka', 'Nunito', system-ui, sans-serif;
   --body: 'Nunito', system-ui, sans-serif;
-  --headline: 'Rubik', 'Nunito', system-ui, sans-serif; /* softly rounded corners, more corporate */
+  --display: 'Rubik', 'Nunito', system-ui, sans-serif; /* display font: softly rounded corners, more corporate */
   color-scheme: light;
 }
 
@@ -35,7 +35,7 @@ button { font: inherit; }
 }
 .site-header > * { pointer-events: auto; }
 .monogram {
-  font-family: var(--display); font-weight: 600; font-size: 16px; letter-spacing: .04em;
+  font-family: var(--rounded); font-weight: 600; font-size: 16px; letter-spacing: .04em;
   text-decoration: none; color: var(--ink);
   width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
   background: linear-gradient(145deg, #fff, var(--silver)); box-shadow: 0 1px 0 #fff inset, 0 2px 8px rgba(0,0,0,.08);

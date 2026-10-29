@@ -11,7 +11,7 @@ Audience: startup investors. Two routes share one content file (`src/content.ts`
 | `--gold` | `#d9a441` | bridge, pins, check |
 | `--sunset` | `#ee7b3a` | links, accents, rabbit nose |
 
-Type: **Fredoka** (rounded display: name, FOUNDER) + **Nunito** (rounded sans body). No serifs anywhere.
+Type: **Rubik** is the display font (`--display`: FOUNDER / EX-ORACLE / VANDERBILT, KHANFLOW.COM). **Fredoka** (`--rounded`) is for the name and softer headings, and **Nunito** for body text. No serifs anywhere.
 Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration keyed to transparent orange-gold by `scripts/bridge.mjs`).
 
 ## `/` — three full-height panels
@@ -27,7 +27,7 @@ Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration 
 - `MASHIUR KHAN.` sits top-right, light and wide-tracked, and fades in. Behind it the bridge silhouette stretches past both ends of the name and bleeds off the right edge at low opacity.
 - The rabbit head starts beside FOUNDER, arcs up and over to the left, then drops to the bottom-left. It spins fast with ears fluttering. `building khanflow.com ↗` is set along the descending part of the arc, and each letter unlocks as the rabbit passes it.
 - The rabbit lands with a small hop and its arms bud out. From then on it is `position: fixed` and draggable. **It is Robbit:** clicking it opens the chat as a speech bubble above its head.
-- `FOUNDER` slams in (large, rounded, left-aligned stack, centre of the page), and a long one-stroke check draws from the bottom up. A small chevron under the newest credential bobs up and down.
+- `FOUNDER` slams in (large, rounded, left-aligned stack, centre of the page), and a tapered gold dash (heavy at the foot, hairline at the tip) draws from the bottom up. A small chevron under the newest credential bobs up and down.
 - A faded `Press any key` hint: each key press slams in the next credential (`EX-ORACLE`, then `VANDERBILT`), each with its own check, and the chevron moves down. Scrolling reveals all of them.
 
 **Panel 2 (story + timeline + globe)**, laid out from sketch #1: narrative and timeline on the left, a large globe on the right.
