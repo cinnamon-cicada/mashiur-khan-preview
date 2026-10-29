@@ -17,6 +17,11 @@ const RABBIT = typeof window !== 'undefined' && window.innerWidth < 720 ? 96 : 1
 const LETTER_STAGGER = 0.045
 const WORD_STAGGER = 0.32
 const LETTER_MS = 750
+// name slide-in: letters emerge from behind a soft, invisible curtain about halfway across the screen,
+// the period first and the M last
+const CURTAIN_FADE = 50 // px over which the curtain fades from hidden to fully shown
+const NAME_STAGGER = 0.055
+const NAME_MS = 900
 
 type Pt = { x: number; y: number }
 type Geom = { d: string; start: Pt; end: Pt }
@@ -37,6 +42,10 @@ export default function Home() {
 
   const heroRef = useRef<HTMLElement>(null)
   const founderRef = useRef<HTMLDivElement>(null)
+  const nameRef = useRef<HTMLHeadingElement>(null)
+  // pad: how far the name's mask box reaches left to the curtain; dist: how far each letter starts behind it
+  const [nameGeo, setNameGeo] = useState<{ pad: number; dist: number } | null>(null)
+  const [nameIn, setNameIn] = useState(reduced)
   const pathRef = useRef<SVGPathElement>(null)
   const linkRef = useRef<HTMLAnchorElement>(null)
   const trail = useRef<StarTrailHandle>(null)
@@ -68,6 +77,29 @@ export default function Home() {
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
   }, [measure])
+
+  // The curtain sits at 50vw, or just left of the name when the name is wider than half the screen (phones).
+  useLayoutEffect(() => {
+    const place = () => {
+      const h = nameRef.current
+      if (!h) return
+      const pad = parseFloat(h.style.paddingLeft) || 0
+      const r = h.getBoundingClientRect()
+      const left = r.left + pad, right = r.right
+      const curtain = Math.min(window.innerWidth * 0.5, left - 24)
+      setNameGeo({ pad: left - curtain + CURTAIN_FADE, dist: right - curtain + CURTAIN_FADE })
+    }
+    place()
+    document.fonts?.ready.then(place)
+    window.addEventListener('resize', place)
+    return () => window.removeEventListener('resize', place)
+  }, [])
+
+  useEffect(() => {
+    if (!nameGeo || nameIn) return
+    const t = setTimeout(() => setNameIn(true), 250)
+    return () => clearTimeout(t)
+  }, [nameGeo, nameIn])
 
   // Name fades in, the rabbit fades in at the launch spot, then it leaps.
   useEffect(() => {
@@ -158,7 +190,25 @@ export default function Home() {
           transition={{ duration: 0.9, ease: 'easeOut' }}
         >
           <img className="bridge" src="/img/bridge-gold.png" alt="" aria-hidden="true" />
-          <h1 className="name metal">{person.name.toUpperCase()}.</h1>
+          <h1
+            className="name metal-letters"
+            ref={nameRef}
+            aria-label={`${person.name}.`}
+            style={nameGeo ? ({ paddingLeft: nameGeo.pad, marginLeft: -nameGeo.pad, '--curtain': `${CURTAIN_FADE}px` } as React.CSSProperties) : undefined}
+          >
+            {[...`${person.name.toUpperCase()}.`].map((ch, j) => (
+              <span key={j} className="name-slot" style={{ '--i': j } as React.CSSProperties} aria-hidden="true">
+                <motion.span
+                  className="m-letter"
+                  initial={false}
+                  animate={nameIn ? { x: 0, opacity: 1 } : { x: -(nameGeo?.dist ?? 2000), opacity: 0 }}
+                  transition={nameIn ? { duration: NAME_MS / 1000, ease: [0.2, 0.8, 0.2, 1], delay: (person.name.length - j) * NAME_STAGGER } : { duration: 0 }}
+                >
+                  {ch === ' ' ? '\u00a0' : ch}
+                </motion.span>
+              </span>
+            ))}
+          </h1>
         </motion.div>
 
         <div className="creds">
@@ -176,7 +226,7 @@ export default function Home() {
                       // --i lives on a plain wrapper: framer won't animate an element whose style carries a CSS variable
                       <span key={j} className="cred-slot" style={{ '--i': j } as React.CSSProperties}>
                       <motion.span
-                        className="cred-letter"
+                        className="cred-letter m-letter"
                         initial={false}
                         animate={shown ? { opacity: 1, x: 0 } : { opacity: 0, x: '100vw' }}
                         transition={shown ? { duration: LETTER_MS / 1000, ease: [0.2, 0.8, 0.2, 1], delay: t0 + j * LETTER_STAGGER } : { duration: 0 }}

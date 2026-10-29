@@ -29,7 +29,7 @@ Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration 
   EX-ORACLE ╱  ╱ (rabbit starts)   ╲
   VANDERBILT ╱   ˅                  ╲[chat] (rabbit)
 ```
-- `MASHIUR KHAN.` sits top-right, light and wide-tracked, and fades in. Behind it the bridge silhouette stretches past both ends of the name and bleeds off the right edge at low opacity.
+- `MASHIUR KHAN.` sits top-right, light and wide-tracked. Its letters slide in from the left, emerging from behind an invisible, soft-edged curtain at 50vw (just left of the name on phones): the period first, the M last. Behind it the bridge silhouette stretches past both ends of the name and bleeds off the right edge at low opacity.
 - The rabbit head starts low on the left (over where the credentials will appear), arcs up and over to the right, then drops to the bottom-right. It spins fast with ears fluttering.
 - The rabbit lands with a small hop and its arms bud out. From then on it is `position: fixed` and draggable. **It is Robbit:** clicking it opens the chat as a speech bubble beside it (to its left when it's on the right half of the screen).
 - As soon as the rabbit takes off, the credentials (a large left-aligned stack, 5vw from the left edge) slide in one letter at a time from the right edge of the screen, moving right to left; the leading letter arrives first, like a train pulling in. The bottom word starts first and each word's first letter lags the one below it: `VANDERBILT`, then `EX-ORACLE`, then `FOUNDER`. Once a word is in, a tapered gold dash (heavy at the foot, hairline at the tip) draws from the bottom up. A small chevron under `VANDERBILT` bobs up and down.

@@ -9,6 +9,12 @@
   font-family: var(--rounded); font-weight: 400; letter-spacing: .14em;
   font-size: clamp(26px, 3.8vw, 60px); white-space: nowrap;
 }
+.name-slot, .m-letter { display: inline-block; }
+/* the curtain: letters left of it are hidden, with a soft fade across its edge */
+.name[style] {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, transparent calc(var(--curtain) * .2), #000 var(--curtain));
+  mask-image: linear-gradient(to right, transparent 0, transparent calc(var(--curtain) * .2), #000 var(--curtain));
+}
 .bridge {
   position: absolute; pointer-events: none; user-select: none;
   left: -28%; width: calc(128% + 6vw + 8vw);  /* overhangs the name on the left, bleeds off-page on the right */

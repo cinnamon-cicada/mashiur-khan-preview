@@ -48,7 +48,7 @@ button { font: inherit; }
    word reads as a single brushed surface even while the letters move independently */
 @property --sheen { syntax: '<length>'; inherits: true; initial-value: 0px; }
 .metal-letters { --sheen: 0px; animation: sheen 7s ease-in-out infinite alternate; }
-.metal-letters .cred-letter {
+.metal-letters .m-letter {
   background-image: var(--metal-silver); background-size: 14em 100%;
   background-position: calc(var(--sheen) - var(--i) * 1em) 50%;
   -webkit-background-clip: text; background-clip: text; color: transparent;
