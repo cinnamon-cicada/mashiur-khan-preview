@@ -407,7 +407,7 @@ function Cta({ linkRef, onNear }: { linkRef: React.RefObject<HTMLAnchorElement |
   ]
   return (
     <section className="cta">
-      <p className="cta-kicker">Check out the startup here:</p>
+      <p className="cta-kicker">Check it out:</p>
       <a
         ref={linkRef}
         className="cta-link"

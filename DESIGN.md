@@ -39,7 +39,7 @@ Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration 
 - Data: `getTimeline()` (mock). LinkedIn returns HTTP 999 to scrapers, so a real sync needs an official export or a data provider. The sample entries in `content.ts` are placeholders to correct.
 
 **Panel 3 (CTA)**
-- `CHECK OUT THE STARTUP HERE: KHANFLOW.COM`, centred and set high.
+- `CHECK IT OUT: KHANFLOW.COM`, centred and set high.
 - When the cursor is on or near the link, the rabbit perks its ears, lifts its right arm and waves.
 - Contact icons spread along the bottom (email, phone, LinkedIn, GitHub).
 
