@@ -7,16 +7,16 @@ import { getTimeline } from '../api/mock'
 import { contacts, person, places, startup, story, type TimelineEntry } from '../content'
 import './sf.css'
 
-// Everything animates inside this band of the screen. It's inset so blocks leave while still visible.
+// Everything animates inside this band of the screen. It's inset so fades finish leaving while still visible.
 const BAND = '-10% 0px -10% 0px'
 const EASE = [0.2, 0.8, 0.2, 1] as const
 
-// Slides in from the side one letter at a time as it enters the band, with the letter nearest the
-// incoming side leading, and back out as it leaves.
+// Slides in from the side one letter at a time the first time it enters the band, with the letter
+// nearest the incoming side leading.
 // Words stay unbroken so lines wrap normally, and a long line takes no longer than about a second to arrive.
 function Letters({ from, text }: { from: 'left' | 'right'; text: string }) {
   const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { margin: BAND })
+  const inView = useInView(ref, { margin: BAND, once: true })
   const reduced = useReducedMotion()
   const count = text.replaceAll(' ', '').length
   const stagger = Math.min(0.045, 1 / count)
@@ -38,7 +38,7 @@ function Letters({ from, text }: { from: 'left' | 'right'; text: string }) {
                     className="sf-letter"
                     initial={false}
                     animate={{ x: show ? 0 : from === 'left' ? '-100vw' : '100vw' }}
-                    transition={reduced ? { duration: 0 } : { duration: show ? 0.7 : 0.5, ease: EASE, delay: show ? (from === 'left' ? count - 1 - i : i) * stagger : 0 }}
+                    transition={reduced ? { duration: 0 } : { duration: 0.7, ease: EASE, delay: (from === 'left' ? count - 1 - i : i) * stagger }}
                   >
                     {ch}
                   </motion.span>
@@ -52,11 +52,11 @@ function Letters({ from, text }: { from: 'left' | 'right'; text: string }) {
   )
 }
 
-// KHANFLOW.COM arrives spread wide and closes up into the word, as on the homepage, reopening as it leaves.
+// KHANFLOW.COM arrives spread wide and closes up into the word, once, as on the homepage.
 // Padding-left matches the trailing letter-space so the word stays centred throughout.
 function Closing() {
   const ref = useRef<HTMLParagraphElement>(null)
-  const inView = useInView(ref, { margin: BAND })
+  const inView = useInView(ref, { margin: BAND, once: true })
   const reduced = useReducedMotion()
   const closed = reduced || inView
   return (
