@@ -12,7 +12,7 @@ Night theme: silver and metallic blue on a deep navy-black background.
 | `--metal-blue` | brushed blue gradient | KHANFLOW.COM, dashes, accents, active toggle |
 | `--glow` | `110, 170, 255` | cursor light and hover glow |
 
-- Big headers (name, credentials, story headline, KHANFLOW.COM, /sf name and answer) use the metal gradients with a slow back-and-forth gleam.
+- Big headers (name, credentials, story headline, KHANFLOW.COM) use the metal gradients with a slow back-and-forth gleam.
 - The pointer carries a soft blue light that swells over anything interactive. Links, buttons and pins glow blue on hover.
 - A very sparse field of faint stars (silver, a few blue) pulses slowly behind everything.
 - The rabbit is a soft moonlit silver-white, and leaves a blue-silver shooting-star trail (in flight or while dragged) that lingers about 3s before fading.
@@ -49,15 +49,11 @@ Motifs: bunny head (Robbit), Golden Gate Bridge silhouette (source illustration 
 - Contact icons spread along the bottom (email, phone, LinkedIn, GitHub). When they're first reached, each does a quick hop and a little wobble in place, left to right.
 
 ## `/sf` — minimal edition
-A single column taking the middle 50% of the screen on desktop (full width minus gutters on mobile). Quiet type, hairline rules, lots of air.
-1. Introduction: name, photo (right), short intro + mission, row of links.
-2. khanflow.com: what it is, plus "meet my cofounder →" with a photo of Tausif.
-3. Who I am: Jane Street, Oracle, Vanderbilt, each linkable to a project.
-4. FAQ: "Favorite city" "SF."
+Light mode: dark brown text on off-white, no stars or cursor glow, and dull orange wherever the rest of the site uses blue. The homepage's text and nothing else, in the same order, with 25vw padding on each side. No formatting: every line is paragraph size except the name and KHANFLOW.COM, which are larger, and the three credentials, which are slightly smaller. The name and the credentials below it are right-aligned; the closing lines and icons are centred. The name slides in and out from the left letter by letter as it scrolls past, the credentials don't animate, KHANFLOW.COM closes up from a wide spread, and everything at paragraph size, plus the icons, fades. The timeline is a bulleted list. Each item is a single line, reading year, title in bold, place, description, separated by em dashes. The first item is just its year and place. The contact icons sit at the bottom, bare, without labels or circles.
 
 ## Shared components
 - **Header**: just the route toggle (`Studio` / `SF`) at the top right. Small and translucent.
-- **Robbit chat**: on `/` the landed rabbit is the chat. Click it and a speech bubble opens: "Hi! I'm Robbit, your furry friend. Ask me anything!" On `/sf` a small bunny button sits at the bottom-right. `sendChat()` is mocked with keyword answers drawn from `content.ts`. The real version would be a server route calling the Claude API.
+- **Robbit chat**: on `/` the landed rabbit is the chat. Click it and a speech bubble opens: "Hi! I'm Robbit, your furry friend. Ask me anything!" On `/sf` the bare rabbit sits at the bottom-right, with no frame or glow. `sendChat()` is mocked with keyword answers drawn from `content.ts`. The real version would be a server route calling the Claude API.
 
 ## Accessibility & motion
 `prefers-reduced-motion` skips straight to the final hero state. Every interactive control is keyboard reachable. The dragged rabbit is decorative (`aria-hidden`).
